@@ -1,12 +1,13 @@
 package com.bc.ct.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import com.bc.ct.beans.Location;
+import com.bc.ct.repository.mapper.LocationRowMapper;
 
 @Repository
 public class GeographyRepositoryImpl implements GeographyRepository{
@@ -14,18 +15,40 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public void testRead() {
+	@Override
+	public Location getLocation(String code) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("select @ID as keyId, COMMODITY.CODE, ");
-		sql.append("BOL.DESC, CLASS, ");
-		sql.append("DESCRIPTION from NMFC ");
-		sql.append("where COMMODITY.CODE = 1 ");
-		sql.append("order by DESCRIPTION");
-		jdbcTemplate.query(sql.toString(), new RowMapper<String>() {
-			@Override
-			public String mapRow(ResultSet rs, int col) throws SQLException {
-				return "";
-			}
-		});
+		sql.append("select CODE, ");
+		sql.append("NAME, ");
+		sql.append("ADDRESS1, ");
+		sql.append("ADDRESS2, ");
+		sql.append("CITY, ");
+		sql.append("STATE, ");
+		sql.append("ZIP, ");
+		sql.append("COUNTY, ");
+		sql.append("COUNTRY, ");
+		sql.append("SPLC ");
+		sql.append("from LOCATION.CODES ");
+		sql.append("where CODE = ?");
+		
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[] {code}, new LocationRowMapper());
+	}
+	
+	@Override
+	public List<Location> getAllLocations() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select CODE, ");
+		sql.append("NAME, ");
+		sql.append("ADDRESS1, ");
+		sql.append("ADDRESS2, ");
+		sql.append("CITY, ");
+		sql.append("STATE, ");
+		sql.append("ZIP, ");
+		sql.append("COUNTY, ");
+		sql.append("COUNTRY, ");
+		sql.append("SPLC ");
+		sql.append("from LOCATION.CODES");
+		
+		return jdbcTemplate.query(sql.toString(), new LocationRowMapper());
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bc.ct.beans.Location;
 import com.bc.ct.repository.GeographyRepository;
 import com.bc.ct.ws.model.RateRequest;
 
@@ -23,10 +24,11 @@ public class RatingController {
 	
 	@RequestMapping(value = "/refreshODPairs", method = RequestMethod.GET)
 	@ResponseBody
-	private void refreshODPairs() {
+	private Location refreshODPairs() {
 		//TODO: Fill out method
 		System.out.println("OD Pairs Refreshed");
-		repo.testRead();
+		Location location = repo.getLocation("31");
+		return location;
 	}
 	
 	@RequestMapping(value = "/rate", method = RequestMethod.POST)

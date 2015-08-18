@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="layout :: headerFragment('Rating')" />
+<head th:include="layout :: headerFragment('')" />
 <body>
 	<div class="container">
-		<div class="page-header" style="margin-bottom:5px; margin-top:5px;">
+		<div class="page-header" style="margin-bottom:5px; margin-top:5px; position:relative;">
 			<div style="position:absolute;">
-				<div class="pull-left">
-					<img th:src="@{/images/BCLogoSmall.png}"/>
-				</div>
+				<img th:src="@{/images/BCLogoSmall.png}"/>
 			</div>
 			<div class="text-center">
 				<h1 style="margin-bottom:0px;margin-top:5px;">CT Online Rating <small></small></h1>
 			</div>
+			<div style="position:absolute;right:0px;top:0px;">
+				<h3 style="margin-top:5px;">
+					<span th:if="${#arrays.contains(@environment.getActiveProfiles(),'prod')}" 
+						class="label label-success">PRODUCTION</span>
+					<span th:unless="${#arrays.contains(@environment.getActiveProfiles(),'prod')}" 
+						class="label label-danger">TEST</span>
+				</h3>
+			</div>
 		</div>
-		<form class="form">
+		<form class="form" name="ratingForm">
 			<div class="row form-inline">
 				<div class="col-sm-4 form-group" style="margin-bottom:5px;">
 					<label class="control-label" for="client">Client</label>
 					<select class="form-control selectpicker" data-width="auto" id="client" style="margin-left:15px;">
 						<option>BOISEC</option>
 						<option>BOISEP</option>
-						<option>BOISEW</option>
+						<option selected="selected">BOISEW</option>
 					</select>
 				</div>
 				<div class="text-right col-sm-8">
-					<button class="btn btn-primary"><i class="glyphicon glyphicon-refresh"></i> Refresh O/D</button>
+					<button class="btn btn-primary" tabindex="-1"><i class="glyphicon glyphicon-refresh"></i> Refresh O/D</button>
 				</div>
 			</div>
 
@@ -38,6 +44,13 @@
 			
 		</form>
 	</div>
+	
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var carrierListUrl = /*[[@{/carrierList.json}]]*/ '/carrierList.json';
+		var locationByCodeUrl = /*[[@{/locationByCode.json}]]*/ '/locationByCode.json';
+		/*]]>*/
+	</script>
 	<script type="text/javascript" th:src="@{/js/views/rating.js}" th:inline="javascript"></script>
 </body>
 </html>

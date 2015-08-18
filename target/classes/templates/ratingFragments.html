@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="address(panelTitle, prefix)">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title" th:text="${panelTitle}">Shipper(Origin) Information</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline">
+					<div class="row col-sm-12" style="margin-bottom: 5px;">
+					<div class="form-group">
+							<label class="control-label" th:for="${prefix} + 'Search'">Search</label>
+							<input th:id="${prefix} + 'Search'" type="text" placeholder="Search" class="form-control typeahead" />
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" th:for="${prefix} + 'LocationCode'">Location Code</label>
+							<input th:id="${prefix} + 'LocationCode'" type="text" placeholder="Code" class="form-control" readonly="readonly"/>
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" th:for="${prefix} + 'LocationName'">Name</label>
+							<input th:id="${prefix} + 'LocationName'" type="text" placeholder="Name" class="form-control" readonly="readonly"></input>
+						</div>
+					</div>
+					<div class="row col-sm-12" style="margin-bottom: 5px;">
+						<div class="form-group">
+							<label class="control-label" th:for="${prefix} + 'City'">City</label>
+							<input th:id="${prefix} + 'City'" type="text" placeholder="City" class="form-control" readonly="readonly"/>
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" th:for="${prefix} + 'State'">State</label>
+							<input th:id="${prefix} + 'State'" type="text" placeholder="State" class="form-control" readonly="readonly"></input>
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" th:for="${prefix} + 'Zip'">Zip</label>
+							<input th:id="${prefix} + 'Zip'" type="text" placeholder="Zip Code" class="form-control" readonly="readonly"></input>
+						</div>
+					</div>
+					<div class="row col-sm-12">
+						<div class="form-group">
+							<label class="control-label" th:for="${prefix} + 'County'">County</label>
+							<input th:id="${prefix} + 'County'" type="text" placeholder="County" class="form-control" readonly="readonly"/>
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" th:for="${prefix} + 'SPLC'">SPLC</label>
+							<input th:id="${prefix} + 'SPLC'" type="text" placeholder="SPLC" class="form-control" readonly="readonly"></input>
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" th:for="${prefix} + 'Country'">Country</label>
+							<input th:id="${prefix} + 'Country'" type="text" placeholder="Country" class="form-control" readonly="readonly"></input>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Commodity -->
+	<div th:fragment="commodity">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title" th:text="Commodity">Commodity</h3>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline">
+					<div class="row col-sm-12">
+						<div class="form-group">
+							<label class="control-label" for="commodityDesc">Description</label>
+							<input th:id="commodityDesc" type="text" placeholder="Description" class="form-control" />
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" for="commodityCode">Code</label>
+							<input th:id="commodityCode" type="text" placeholder="Code" class="form-control" />
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" for="commodityClass">Class</label>
+							<input th:id="commodityClass" type="text" placeholder="Class" class="form-control" readonly="readonly"/>
+						</div>
+						<div class="form-group" style="margin-left: 15px;">
+							<label class="control-label" for="commodityWeight">Paid Weight</label>
+							<input th:id="commodityWeight" type="text" placeholder="Paid Weight" class="form-control" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+	<!-- Stop-Off(s) -->
+	<div class="panel panel-primary" th:fragment="stopOffs">
+		<div class="panel-heading">
+			<h3 class="panel-title">Stop-Off(s)</h3>
+		</div>
+		<div class="panel-body">
+			<div class="col-sm-1">
+				<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#stopOffModal">
+					<i class="glyphicon glyphicon-plus"></i> Stop-Off
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Footer inputs -->
+	<div th:fragment="footerInputs">
+		<div class="row">
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="shipDate">Ship Date</label>
+				<div class="input-group date" id="shipDateInputGroup">
+					<input id="shipDate" type="text" placeholder="Ship Date" class="form-control">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+					</input>
+				</div>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="terms">Terms</label>
+				<select id="terms" class="form-control selectpicker" data-width="auto">
+					<option>Outbound Prepaid</option>
+					<option>Outbound Collect</option>
+					<option>Inbound Prepaid</option>
+					<option>Inbound Collect</option>
+				</select>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="carrierList">Carrier List</label>
+				<select id="carrierList" class="form-control selectpicker" data-width="auto">
+					<option>None</option>
+					<option>BOISEW.TRUCK</option>
+					<option>BOISEW.CADTRK</option>
+					<option>BOISEW.ALL</option>
+					<option>BOISEW.RAIL</option>
+				</select>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="scac">SCAC</label>
+				<input id="scac" type="text" placeholder="SCAC" class="form-control"></input>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="destCarrier">Destination Carrier</label>
+				<input id="destCarrier" type="text" placeholder="Destination Carrier" class="form-control"></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="equipmentType">Equipment Type</label>
+				<input id="equipmentType" type="text" placeholder="Equipment Type" class="form-control"></input>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="equipmentInitials">Equipment Initials</label>
+				<input id="equipmentInitials" type="text" placeholder="Equipment Initials" class="form-control"></input>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="equipmentNumber">Equipment Number</label>
+				<input id="equipmentNumber" type="text" placeholder="Equipment Number" class="form-control"></input>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="route">Route</label>
+				<input id="route" type="text" placeholder="Route" class="form-control"></input>
+			</div>
+			<div class="col-sm-2 form-group">
+				<label class="control-label" for="roundTrip">Round Trip</label>
+				<div class="form-control">
+					<input id="roundTrip" type="checkbox"></input>
+				</div>
+			</div>
+			<div class="col-sm-2 form-group">
+				<div class="row col-sm-offset-2" style="margin-top:1.4em;">
+					<button class="btn btn-primary btn-lg" type="submit">Rate</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" th:fragment="stopOffModal" th:id="stopOffModal" tabindex="-1" role="dialog" aria-labelledby="stopOffModalTitle">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" th:id="stopOffModalTitle">Add Stop-Off</h4>
+				</div>
+				<div class="modal-body">
+					<div th:include="ratingFragments::address('Stop-Off', stopOff)"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Add</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+</body>
+</html>

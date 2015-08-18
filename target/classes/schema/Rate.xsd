@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified" 
+            attributeFormDefault="unqualified"
+            targetNamespace="http://www.boiseinc.com/cc"
+            xmlns:tns="http://www.boiseinc.com/cc"
+	        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+	        jaxb:version="2.0" 
+	        xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	        xmlns="http://www.w3.org/2001/XMLSchema"
+	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<xsd:annotation>
+        <xsd:documentation>
+				build date: @antBuildDate@		
+        </xsd:documentation>
+		<xsd:appinfo>
+			<jaxb:globalBindings>
+				<jaxb:javaType name="java.util.Date" xmlType="xsd:date" 
+				    parseMethod="com.boiseinc.cc.util.DateConverter.parseDate" 
+				    printMethod="com.boiseinc.cc.util.DateConverter.printDate" />
+				<jaxb:javaType name="java.util.Date" xmlType="xsd:dateTime" 
+				    parseMethod="com.boiseinc.cc.util.DateTimeConverter.parseDate" 
+				    printMethod="com.boiseinc.cc.util.DateTimeConverter.printDate" />
+			</jaxb:globalBindings>
+			<jaxb:schemaBindings>
+				<jaxb:package name="com.boiseinc.cc.webservice.rating" />
+			</jaxb:schemaBindings>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element name="RateRequest">
+		<xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="equipment">
+                <xsd:complexType>
+                  <xsd:attribute name="type" type="xsd:string"/>
+                  <xsd:attribute name="init" type="xsd:string"/>
+                  <xsd:attribute name="num" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="origin" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:attribute name="code" type="xsd:string"/>
+                  <xsd:attribute name="city" type="xsd:string"/>
+                  <xsd:attribute name="state" type="xsd:string"/>
+                  <xsd:attribute name="zip" type="xsd:string"/>
+                  <xsd:attribute name="county" type="xsd:string"/>
+                  <xsd:attribute name="nation" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="dest" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:attribute name="code" type="xsd:string"/>
+                  <xsd:attribute name="city" type="xsd:string"/>
+                  <xsd:attribute name="state" type="xsd:string"/>
+                  <xsd:attribute name="zip" type="xsd:string"/>
+                  <xsd:attribute name="county" type="xsd:string"/>
+                  <xsd:attribute name="nation" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="commoditys" minOccurs="1" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="commodity">
+                      <xsd:complexType>
+                        <xsd:attribute name="code" type="xsd:string" use="required"/>
+                        <xsd:attribute name="desc" type="xsd:string"/>
+                        <xsd:attribute name="wgt" type="xsd:int" use="required"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="stops" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="stop">
+                      <xsd:complexType>
+                          <xsd:attribute name="code" type="xsd:string"/>
+                          <xsd:attribute name="city" type="xsd:string"/>
+                          <xsd:attribute name="state" type="xsd:string"/>
+                          <xsd:attribute name="zip" type="xsd:string"/>
+                          <xsd:attribute name="county" type="xsd:string"/>
+                          <xsd:attribute name="nation" type="xsd:string"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="userId" type="xsd:string" use="required" />
+            <xsd:attribute name="clientGroup" type="tns:clientGroup" use="required" />
+            <xsd:attribute name="sidBol" type="xsd:string" />
+            <xsd:attribute name="scac" type="xsd:string" />
+            <xsd:attribute name="destCarrier" type="xsd:string" />
+            <xsd:attribute name="route" type="xsd:string" />
+            <xsd:attribute name="shipDate" type="xsd:date" use="required" />
+            <xsd:attribute name="shipMode" type="tns:shipMode" use="required" />
+            <xsd:attribute name="currency" type="xsd:string" default="USD"/>
+            <xsd:attribute name="roundTrip" type="xsd:boolean" use="optional"  default="false"/>
+          </xsd:complexType>
+	</xsd:element>
+	<xsd:element name="RateResponse">
+		<xsd:complexType>
+			<xsd:choice maxOccurs="1" minOccurs="1">
+				<xsd:element maxOccurs="1"  name="failure" type="tns:RateFailure"/>
+				<xsd:element maxOccurs="unbounded" name="quotes" type="tns:RateQuote"/>
+			</xsd:choice>
+            <xsd:attribute name="tracToken" type="xsd:string"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="RateFailure">
+		<xsd:all>
+			<xsd:element maxOccurs="1" minOccurs="0" name="message" type="xsd:string"/>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="RateQuote">
+       <xsd:sequence>
+         <xsd:element name="equipment" minOccurs="1" maxOccurs="1">
+           <xsd:complexType>
+             <xsd:attribute name="type" type="xsd:string"/>
+             <xsd:attribute name="init" type="xsd:string"/>
+             <xsd:attribute name="num" type="xsd:string"/>
+           </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="charges">
+           <xsd:complexType>
+             <xsd:sequence>
+               <xsd:element name="charge" minOccurs="1" maxOccurs="unbounded">
+                 <xsd:complexType>
+                   <xsd:attribute name="stopNum" type="xsd:int"/>
+                   <xsd:attribute name="code" type="xsd:string"/>
+                   <xsd:attribute name="desc" type="xsd:string"/>
+                   <xsd:attribute name="meas" type="xsd:string"/>
+                   <xsd:attribute name="rate" type="xsd:float"/>
+                   <xsd:attribute name="units" type="xsd:float"/>
+                   <xsd:attribute name="amt" type="xsd:float"/>
+                 </xsd:complexType>
+               </xsd:element>
+             </xsd:sequence>
+           </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="tariffAuth" minOccurs="1" maxOccurs="unbounded">
+           <xsd:complexType>
+             <xsd:attribute name="num" type="xsd:string"/>
+             <xsd:attribute name="type" type="xsd:string"/>
+             <xsd:attribute name="expDate" type="xsd:date"/>
+             <xsd:attribute name="effDate" type="xsd:date"/>
+           </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="rateRemarkList" minOccurs="0" maxOccurs="unbounded" type="xsd:string"/>
+       </xsd:sequence>
+       <xsd:attribute name="tracToken" type="xsd:string"/>
+       <xsd:attribute name="scac" type="xsd:string"/>
+       <xsd:attribute name="totalAmt" type="xsd:float"/>
+       <xsd:attribute name="terms" type="xsd:string"/>
+       <xsd:attribute name="route" type="xsd:string"/>
+       <xsd:attribute name="miles" type="xsd:int"/>
+       <xsd:attribute name="currency" type="xsd:string"/>
+       <xsd:attribute name="ctShipMode" type="xsd:string"/>
+     </xsd:complexType>
+     
+	<xsd:simpleType name="clientGroup">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BOISEP" />
+			<xsd:enumeration value="BOISEW" />
+			<xsd:enumeration value="BOISEB" />
+			<xsd:enumeration value="BOISEC" />
+			<xsd:enumeration value="BOISEH" />
+			<xsd:enumeration value="BOISET" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="shipMode">
+		<xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ALL" />
+            <xsd:enumeration value="TRUCK" />
+            <xsd:enumeration value="RAIL" />
+            <xsd:enumeration value="LTL" />
+            <xsd:enumeration value="PALL" />
+            <xsd:enumeration value="PTRK" />
+            <xsd:enumeration value="PRR" />
+            <xsd:enumeration value="PLTL" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="money">
+	      <xsd:restriction base="xsd:decimal">
+	      	<xsd:fractionDigits value="2" />
+	      </xsd:restriction>
+	</xsd:simpleType>
+	
+</xsd:schema>

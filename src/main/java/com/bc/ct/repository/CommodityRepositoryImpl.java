@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -50,6 +51,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 		});
 	}
 
+	@Cacheable("commodity")
 	@Override
 	public List<Commodity> getCommodityList(String client) {
 		StringBuilder sql = new StringBuilder();
@@ -57,6 +59,9 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 		sql.append("from ").append(client).append(".HIST a, ");
 		sql.append(client).append(".HIST_COMM.INFO b ");
 		sql.append("where a.@ID eq b.@ID ");
+		sql.append("and b.COMMODITY.CODE IS NOT NULL ");
+		sql.append("and b.COMMODITY.DESCRIPTION IS NOT NULL ");
+		sql.append("and b.COMMODITY.CODE <> b.COMMODITY.DESCRIPTION ");
 		if (!"BOISEB".equalsIgnoreCase(client)){
 			sql.append("and a.J.RMK.CODE = 'BOL' ");
 		}

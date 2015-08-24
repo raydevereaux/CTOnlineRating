@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<div th:fragment="originAddress">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Shipper(Origin) Information</h3>
+			</div>
+			<div class="panel-body" th:object="${rateRequest.Origin}">
+				<div th:replace="ratingAddresses :: addressBody('origin')"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:fragment="destAddress">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Consignee (Destination) Information</h3>
+			</div>
+			<div class="panel-body" th:object="${rateRequest.Dest}">
+				<div th:replace="ratingAddresses :: addressBody('dest')"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:fragment="stopOffAddress">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Stop-Off</h3>
+			</div>
+			<div class="panel-body">
+				<div th:replace="ratingAddresses :: stopOffAddressBody('stopOff')"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-inline" th:fragment="addressBody(prefix)">
+		<div class="row col-sm-12" style="margin-bottom: 5px;">
+		<div class="form-group">
+				<label class="control-label" th:for="${prefix} + 'Search'">Search</label>
+				<input th:id="${prefix} + 'Search'" type="text" placeholder="Search" class="form-control typeahead" />
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'LocationCode'">Location Code</label>
+				<input th:id="${prefix} + 'Code'" th:field="*{code}" type="text" placeholder="Code" class="form-control"/>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'LocationName'">Name</label>
+				<input th:id="${prefix} + 'Name'" type="text" placeholder="Name" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+		</div>
+		<div class="row col-sm-12" style="margin-bottom: 5px;">
+			<div class="form-group">
+				<label class="control-label" th:for="${prefix} + 'City'">City</label>
+				<input th:id="${prefix} + 'City'" th:field="*{city}" type="text" placeholder="City" class="form-control" readonly="readonly" tabindex="-1"/>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'State'">State</label>
+				<input th:id="${prefix} + 'State'" th:field="*{state}" type="text" placeholder="State" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'Zip'">Zip</label>
+				<input th:id="${prefix} + 'Zip'" th:field="*{zip}" type="text" placeholder="Zip Code" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+		</div>
+		<div class="row col-sm-12">
+			<div class="form-group">
+				<label class="control-label" th:for="${prefix} + 'County'">County</label>
+				<input th:id="${prefix} + 'County'" th:field="*{county}" type="text" placeholder="County" class="form-control" readonly="readonly" tabindex="-1"/>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'SPLC'">SPLC</label>
+				<input th:id="${prefix} + 'SPLC'" type="text" placeholder="SPLC" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'Country'">Country</label>
+				<input th:id="${prefix} + 'Country'" th:field="*{nation}" type="text" placeholder="Country" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-inline" th:fragment="stopOffAddressBody(prefix)">
+		<div class="row col-sm-12" style="margin-bottom: 5px;">
+		<div class="form-group">
+				<label class="control-label" th:for="${prefix} + 'Search'">Search</label>
+				<input th:id="${prefix} + 'Search'" type="text" placeholder="Search" class="form-control typeahead" />
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'LocationCode'">Location Code</label>
+				<input th:id="${prefix} + 'Code'" type="text" placeholder="Code" class="form-control"/>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'LocationName'">Name</label>
+				<input th:id="${prefix} + 'Name'" type="text" placeholder="Name" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+		</div>
+		<div class="row col-sm-12" style="margin-bottom: 5px;">
+			<div class="form-group">
+				<label class="control-label" th:for="${prefix} + 'City'">City</label>
+				<input th:id="${prefix} + 'City'" type="text" placeholder="City" class="form-control" readonly="readonly" tabindex="-1"/>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'State'">State</label>
+				<input th:id="${prefix} + 'State'" type="text" placeholder="State" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'Zip'">Zip</label>
+				<input th:id="${prefix} + 'Zip'" type="text" placeholder="Zip Code" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+		</div>
+		<div class="row col-sm-12">
+			<div class="form-group">
+				<label class="control-label" th:for="${prefix} + 'County'">County</label>
+				<input th:id="${prefix} + 'County'" type="text" placeholder="County" class="form-control" readonly="readonly" tabindex="-1"/>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'SPLC'">SPLC</label>
+				<input th:id="${prefix} + 'SPLC'" type="text" placeholder="SPLC" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+			<div class="form-group" style="margin-left: 15px;">
+				<label class="control-label" th:for="${prefix} + 'Country'">Country</label>
+				<input th:id="${prefix} + 'Country'" type="text" placeholder="Country" class="form-control" readonly="readonly" tabindex="-1"></input>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

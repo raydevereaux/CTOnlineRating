@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	@Cacheable("carrier")
 	@Override
 	public List<String> getCarrierList(Optional<String> client) {
 		StringBuilder sql = new StringBuilder();

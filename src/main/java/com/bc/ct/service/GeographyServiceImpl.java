@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 
 import com.bc.ct.beans.Location;
 import com.bc.ct.repository.GeographyRepository;
+import com.google.common.base.Optional;
 
 @Service
 public class GeographyServiceImpl implements GeographyService {
@@ -26,5 +27,10 @@ public class GeographyServiceImpl implements GeographyService {
 	@Override
 	public List<Location> getAllLocations() {
 		return repo.getAllLocations();
+	}
+	
+	@Override
+	public List<Location> getSpellCheckLocations(String city, String state, Optional<String> zip) {
+		return repo.getSpellCheckLocations(city, state, zip);
 	}
 }

@@ -19,10 +19,24 @@ function setDefaults(){
 	    todayHighlight: true
 	});
 	$('#shipDateInputGroup').datepicker('setDate', new Date());
+	$('#quoteTab').attr('class', 'disabled');
+
+    $('#tabs li').click(function(event){
+        if ($(this).hasClass('disabled')) {
+            return false;
+        }
+    });
+    
+    $('#ratingForm').ajaxForm({
+    	beforeSubmit: validateForm,
+    	type: 'POST'
+    });
+    
+//    $('#rateBtn').click(validateAndRate);
 }
 
 function addListeners(){
-	$('#client').change(clientChanged);
+	$('#clientGroup').change(clientChanged);
 	$('#originCode').keypress(keyPressEvent(loadOriginFromCode, $('#destSearch')));
 	$('#destCode').keypress(keyPressEvent(loadDestFromCode, $('#commodityDesc')));
 }
@@ -112,7 +126,7 @@ function keyPressEvent(callback, nextElement){
 }
 
 function clientChanged(){
-	client = $('#client').val();
+	client = $('#clientGroup').val();
 	refreshCarrierList(client);
 }
 
@@ -128,49 +142,67 @@ function refreshCarrierList(client){
 }
 
 function populateTypeAheads(){
-	populateOriginDestTypeAheads();
+//	populateTypeAhead($('#originSearch'), url);
+//	populateTypeAhead($('#destSearch'), url);
+	populateTypeAhead($('#commodityDesc'), 'commodities', 'desc', commodityUrl + '?client=' + $('#clientGroup').val());
 }
 
-function populateOriginDestTypeAheads(){
-	substringMatcher = function(strs) {
-		return function findMatches(q, cb) {
-			var matches, substringRegex;
-
-			// an array that will be populated with substring matches
-			matches = [];
-
-			// regex used to determine if a string contains the substring `q`
-			substrRegex = new RegExp(q, 'i');
-
-			// iterate through the pool of strings and for any string that
-			// contains the substring `q`, add it to the `matches` array
-			$.each(strs, function(i, str) {
-				if (substrRegex.test(str)) {
-					matches.push(str);
-				}
-			});
-
-			cb(matches);
-		};
-	};
-
-	$('.typeahead').typeahead({
-		hint: true,
-		highlight: true,
-		minLength: 1
-	},
-	{
-		name:'states',
-		source: substringMatcher(['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-		                          'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-		                          'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-		                          'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-		                          'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-		                          'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-		                          'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-		                          'South Carolina', 'South Dakota', 'Tennessee', 'Texasjksdkjlfjklsdjklfjlksdfjsdf', 'Utah', 'Vermont',
-		                          'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'])
+function populateTypeAhead(typeAheadElement, dataName, displayKey, url){
+	var bloodHound = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace(displayKey),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		prefetch: {
+			url: url,
+			ttl: 11400000, //Time to live set to 4 hours
+			// the json file contains an array of strings, but the Bloodhound
+			// suggestion engine expects JavaScript objects so this converts all of
+			// those strings
+			filter: function(list) {
+				return $.map(list, function(commodity) { return { code: commodity.code, desc: commodity.desc}; });
+			}
+		}
 	});
+	bloodHound.clearPrefetchCache();
+    bloodHound.initialize(true);
+	// passing in `null` for the `options` arguments will result in the default
+	// options being used
+	$(typeAheadElement).typeahead({
+		hint: true,
+		highlight: true
+	}, {
+		name: dataName,
+		displayKey: displayKey,
+		source: bloodHound.ttAdapter()
+	}).on('typeahead:selected', function (obj, datum) {
+        $('#commodityCode').val(datum.code);
+        $('#commodityWeight').focus();
+    });
 }
 
+function validateForm(){
+	$('div .form-group').removeClass('has-error');
+	validates = true;
+	if (!$('#originCity').val()){
+		$('#originSearch').closest('.form-group').addClass('has-error');
+		validates = false;
+	}
+	if (!$('#destCity').val()){
+		$('#destSearch').closest('.form-group').addClass('has-error');
+		validates = false;
+	}
+	if (!$('#commodityDesc').val()){
+		$('#commodityDesc').closest('.form-group').addClass('has-error');
+		validates = false;
+	}
+	if (!$('#commodityWeight').val() || $('#commodityWeight').val() <= 0){
+		$('#commodityWeight').closest('.form-group').addClass('has-error');
+		validates = false;
+	}
+	return validates;
+}
+
+function constructRateRequest(){
+	client = $('#clientGroup').val();
+	return JSON.stringify({clientGroup : client});
+}
 

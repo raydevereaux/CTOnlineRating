@@ -13,20 +13,24 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/typeahead.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker3.min.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/ratingStyle.css}"/>
 	<!-- JQuery before bootstrap is IMPORTANT! -->
 	<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script th:src="@{/js/typeahead.bundle.js}"></script>
+	<script th:src="@{/js/jquery.form.min.js}"></script>
 	<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
 	<script th:src="@{/js/bootstrap-select.min.js}"></script>
 	
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		$(document).ajaxError(function(event, jqXHR, settings, thrownError) {
-			if (jqXHR.status === 403){
-				window.location = /*[[@{'/login?denied=true'}]]*/ '/login?denied=true';
-			}
-		});
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		})
 		/*]]>*/
 	</script>
 </head>

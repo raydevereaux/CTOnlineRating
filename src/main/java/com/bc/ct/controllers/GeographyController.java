@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bc.ct.beans.Location;
 import com.bc.ct.service.GeographyService;
+import com.google.common.base.Optional;
 
 @Controller
 public class GeographyController {
@@ -28,5 +29,11 @@ public class GeographyController {
 	@ResponseBody
 	private Location getLocationByCode(@RequestParam String locationCode) {
 		return geoService.getLocation(locationCode);
+	}
+	
+	@RequestMapping(value = "/allSpellCheckLocations.json", method = RequestMethod.GET)
+	@ResponseBody
+	private List<Location> getAllSpellCheckLocations() {
+		return geoService.getSpellCheckLocations("DENVER", "CO", Optional.<String>absent());
 	}
 }

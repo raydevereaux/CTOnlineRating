@@ -19,21 +19,22 @@ public class GeographyController {
 	@Autowired
 	private GeographyService geoService;
 	
-	@RequestMapping(value = "/allLocations.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/allMillLocations.json", method = RequestMethod.GET)
 	@ResponseBody
-	private List<Location> getAllLocations() {
-		return geoService.getAllLocations();
+	private List<Location> getAllMillLocations() {
+		return geoService.getAllMillLocations();
 	}
 	
-	@RequestMapping(value = "/locationByCode.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/millLocationByCode.json", method = RequestMethod.GET)
 	@ResponseBody
-	private Location getLocationByCode(@RequestParam String locationCode) {
-		return geoService.getLocation(locationCode);
+	private Location getMillLocationByCode(@RequestParam String locationCode) {
+		return geoService.getMillLocation(locationCode);
 	}
 	
-	@RequestMapping(value = "/allSpellCheckLocations.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/spellCheckLocations.json", method = RequestMethod.GET)
 	@ResponseBody
-	private List<Location> getAllSpellCheckLocations() {
-		return geoService.getSpellCheckLocations("DENVER", "CO", Optional.<String>absent());
+	private List<Location> getSpellCheckLocations(@RequestParam String city, @RequestParam String state,
+			@RequestParam(required=false) String zip) {
+		return geoService.getSpellCheckLocations(city, state, Optional.fromNullable(zip));
 	}
 }

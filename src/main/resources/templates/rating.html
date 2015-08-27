@@ -7,16 +7,75 @@
 		<div th:replace="ratingFragments :: header"></div>
 		
 		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist" id="tabs">
-			<li role="presentation" class="active" id="ratingTab"><a href="#ratingDiv" aria-controls="Rating" role="tab" data-toggle="tab">Rate</a></li>
-			<li role="presentation" id="quoteTab"><a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab">Quotes</a></li>
+		<ul class="nav nav-tabs" data-tabs="tabs" id="tabs">
+			<li class="active"><a href="#ratingDiv" id="ratingTab" data-toggle="tab">Rate</a></li>
+			<li><a href="#quoteTabDiv" id="quoteTab" data-toggle="tab">Quotes</a></li>
 		</ul>
 
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane fade in active" id="ratingDiv" style="margin-top:10px;">
+			<div class="tab-pane fade in active" id="ratingDiv" style="margin-top:10px;">
 				<form th:replace="ratingFragments :: ratingForm"></form>
+				<div><a id="exampleRate1">Example Rate 1</a><a id="exampleRate2" style="margin-left:20px;">Example Rate 2</a></div>
 			</div>
-			<div role="tabpanel" class="tab-pane fade" id="quotes" style="margin-top:10px;"></div>
+			<div class="tab-pane fade" id="quoteTabDiv" style="margin-top:10px;">
+				<div class="row">
+					<div class="col-sm-5 col-md-4">
+						<div class="col-sm-4">
+							<strong>Origin:</strong>
+						</div>
+						<div class="col-sm-8">
+							<span id="quoteOrigin">MEDFORD, OR</span>
+						</div>
+					</div>
+					<div class="col-sm-5 col-md-4">
+						<div class="col-sm-4">
+							<strong>Destination:</strong>
+						</div>
+						<div class="col-sm-8">
+							<span id="quoteDest" style="white-space:nowrap;">AMERICAN CANYON, CA</span>
+						</div>
+					</div>
+					<div class="col-sm-2 col-md-4">
+						<div class="col-sm-4">
+							<strong>Ship Date:</strong>
+						</div>
+						<div class="col-sm-8">
+							<span id="quoteShipDate">08/26/15</span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-5 col-md-4">
+						<div class="col-sm-4">
+							<strong>Commodity:</strong>
+						</div>
+						<div class="col-sm-8">
+							<span id="quoteCommodity">PLYWOOD</span>
+						</div>
+					</div>
+					<div class="col-sm-5 col-md-4">
+						<div class="col-sm-4">
+							<strong>Weight:</strong>
+						</div>
+						<div class="col-sm-8">
+							<span id="quoteWeight">48,000</span>
+						</div>
+					</div>
+					<div class="col-sm-2 col-md-4">
+						<div class="col-sm-4">
+							<strong>Carrier:</strong>
+						</div>
+						<div class="col-sm-8">
+							<span id="quoteCarrier">BOISEW.ALL</span>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="margin-top:20px;">
+					<div id="quoteTabContent" class="col-sm-12">
+					</div>
+				</div>
+				<div th:replace="ratingQuotes :: quoteModal"></div>
+			</div>
 		</div>
 		
 	</div>
@@ -24,9 +83,10 @@
 	<script type="text/javascript" th:inline="javascript">
 		/*<![CDATA[*/
 		var carrierListUrl = /*[[@{/carrierList.json}]]*/ '/carrierList.json';
-		var locationByCodeUrl = /*[[@{/locationByCode.json}]]*/ '/locationByCode.json';
+		var locationByCodeUrl = /*[[@{/millLocationByCode.json}]]*/ '/locationByCode.json';
 		var commodityUrl = /*[[@{/commodityList.json}]]*/ '/commodityList.json';
 		var rateUrl = /*[[@{/rate}]]*/ '/rate';
+		var spellCheckUrl = /*[[@{/spellCheckLocations.json}]]*/ '/spellCheckLocations.json';
 		/*]]>*/
 	</script>
 	<script type="text/javascript" th:src="@{/js/views/rating.js}" th:inline="javascript"></script>

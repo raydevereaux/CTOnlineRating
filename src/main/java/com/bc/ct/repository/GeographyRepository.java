@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 
 public interface GeographyRepository {
 	
-	public Location getLocation(String code);
-	public List<Location> getAllLocations();
+	public Location getMillLocation(String code);
+	public List<Location> getAllMillLocations();
 	public List<Location> getSpellCheckLocations(String city, String state, Optional<String> zip);
 }

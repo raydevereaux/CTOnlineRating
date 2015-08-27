@@ -24,15 +24,15 @@ public class GeographyRepositoryImplTest {
 	GeographyRepository repo;
 
 	@Test
-	public void testGetLocation() throws Exception {
-		Location location = repo.getLocation("31");
-		assertThat(location, notNullValue());
-		assertThat(location.getCity(), IsEqualIgnoringCase.equalToIgnoringCase("KETTLE FALLS"));
-	}
+		public void testGetMillLocation() throws Exception {
+			Location location = repo.getMillLocation("31");
+			assertThat(location, notNullValue());
+			assertThat(location.getCity(), IsEqualIgnoringCase.equalToIgnoringCase("KETTLE FALLS"));
+		}
 
 	@Test
-	public void testGetAllLocations() throws Exception {
-		List<Location> allLocations = repo.getAllLocations();
-		assertThat(allLocations, hasSize(greaterThan(250)));
-	}
+		public void testGetAllMillLocations() throws Exception {
+			List<Location> allLocations = repo.getAllMillLocations();
+			assertThat(allLocations, hasSize(greaterThan(250)));
+		}
 }

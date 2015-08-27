@@ -20,7 +20,7 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 	
 	@Cacheable("geography")
 	@Override
-	public Location getLocation(String code) {
+	public Location getMillLocation(String code) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select CODE, ");
 		sql.append("NAME, ");
@@ -39,7 +39,7 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 	}
 	
 	@Override
-	public List<Location> getAllLocations() {
+	public List<Location> getAllMillLocations() {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select CODE, ");
 		sql.append("NAME, ");
@@ -65,8 +65,15 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 		sql.append("COUNTY, ");
 		sql.append("COUNTRY, ");
 		sql.append("SPLC ");
-		sql.append("from SPELLCHECK where CITY = 'DENVER'");
+		sql.append("from SPELLCHECK where CITY = ? and STATE = ?");
+		Object[] objs;
+		if(zip.isPresent()) {
+			sql.append(" and ZIP = ?");
+			objs = new Object[]{city, state, zip.get()};
+		}else {
+			objs = new Object[] {city, state};
+		}
 		
-		return jdbcTemplate.query(sql.toString(), new SpellCheckLocationRowMapper());
+		return jdbcTemplate.query(sql.toString(), objs, new SpellCheckLocationRowMapper());
 	}
 }

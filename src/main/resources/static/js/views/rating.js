@@ -4,6 +4,7 @@ var destBloodHound;
 var spellCheckMap = {};
 var spellCheckFocusElement;
 var spellCheckSourceDest = false;
+var stopOffs = [];
 
 $(document).ready(function(){
 	init();
@@ -93,6 +94,7 @@ function addListeners(){
 	$('#clientGroup').change(clientChanged);
 	$('#originCode').keydown(keyPressEvent(loadOriginFromCode, $('#destCode')));
 	$('#destCode').keydown(keyPressEvent(loadDestFromCode, $('#commodityDesc')));
+	$('#stopOffCode').keydown(keyPressEvent(loadStopOffFromCode));
 	$('#clearOriginBtn').click(clearOriginFields);
 	$('#clearDestBtn').click(clearDestFields);
 	$('#destCity, #destState, #destZip').keydown(keyPressEvent(checkSpellCheckDest));
@@ -101,6 +103,7 @@ function addListeners(){
     	$(this).siblings().removeClass('active');
     	$(this).addClass('active');
     });
+	$('#stopOffModalAdd').click(addStopOff);
 	
 	//Spell Check Stuff
 	$('#useSpellCheckBtn').on('click', function(){
@@ -137,12 +140,70 @@ function addListeners(){
 	});
 }
 
+function addStopOff(){
+	code = $('#stopOffCode').val();
+	city = $('#stopOffCity').val();
+	state = $('#stopOffState').val();
+	zip = $('#stopOffZip').val();
+	county = $('#stopOffCounty').val();
+	country = $('#stopOffCountry').val();
+	obj = {code: code, city:city, state:state, zip:zip, county:county, country:country};
+	stopOffs.push(obj);
+	holderDiv = createStopOffText(obj);
+	createStopOffHiddenFields(obj, holderDiv);
+}
+
+function createStopOffText(obj){
+	text = '';
+	if (obj.code){
+		text = text + obj.code + '-';
+	}
+	text = text + obj.city + ', ' + obj.state + ' ' + obj.zip + '<br/>';
+	text = text + obj.county + ' ' + obj.country;
+	index = _.indexOf(stopOffs, obj);
+	numberCircle = '<span class="fa-stack fa-lg pull-left">' +
+		'<i class="fa fa-circle fa-stack-2x"></i>' +
+		'<i class="fa fa-inverse fa-stack-1x">' + (index + 1) + '</i></span>';
+	holderDiv = $("<div></div>");
+	$('#stopOffBody').append(holderDiv.addClass('col-sm-3')
+			.append($(numberCircle))
+			.append($('<p></p>').html(text).attr('style', 'overflow:hidden;margin:0;'))
+			.append($('<i></i>').addClass('fa fa-times fa-lg text-danger')
+					.attr('style', 'cursor:pointer; position:absolute; top:10%; right:0%;')
+					.click(function(){
+						removeStopOff(_.indexOf(stopOffs, obj));
+					})));
+	return holderDiv;
+}
+
+function createStopOffHiddenFields(obj, holderDiv){
+	index = _.indexOf(stopOffs, obj);
+	holderDiv.append($("<input></input>").attr('type', 'hidden').attr('name', 'Stops[' + index + '].Stop.code').attr('value', obj.code));
+	holderDiv.append($("<input></input>").attr('type', 'hidden').attr('name', 'Stops[' + index + '].Stop.city').attr('value', obj.city));
+	holderDiv.append($("<input></input>").attr('type', 'hidden').attr('name', 'Stops[' + index + '].Stop.state').attr('value', obj.state));
+	holderDiv.append($("<input></input>").attr('type', 'hidden').attr('name', 'Stops[' + index + '].Stop.zip').attr('value', obj.zip));
+	holderDiv.append($("<input></input>").attr('type', 'hidden').attr('name', 'Stops[' + index + '].Stop.county').attr('value', obj.county));
+	holderDiv.append($("<input></input>").attr('type', 'hidden').attr('name', 'Stops[' + index + '].Stop.nation').attr('value', obj.country));
+}
+
+function removeStopOff(index){
+	if (index > -1){
+		stopOffs.splice(index, 1);
+	}
+	$('#stopOffBody').empty();
+	$.each(stopOffs, function(key, value){
+		holderDiv = createStopOffText(value);
+		createStopOffHiddenFields(value, holderDiv);	
+	});
+}
+
 function checkSpellCheckDest(){
 	spellCheckSourceDest = true;
 	city = $('#destCity').val();
 	state = $('#destState').val();
-	if (city && state){
-		readSpellCheck(city, state, $('#destZip').val(), loadDestFieldsFromObject);
+	zip = $('#destZip').val();
+	if (city && state && !zip){
+		readSpellCheck(city, state, zip, loadDestFieldsFromObject);
 	}
 }
 
@@ -150,18 +211,20 @@ function checkSpellCheckOrigin(){
 	spellCheckSourceDest = false;
 	city = $('#originCity').val();
 	state = $('#originState').val();
-	if (city && state){
-		readSpellCheck(city, state, $('#originZip').val(), loadOriginFieldsFromObject);
+	zip = $('#originZip').val();
+	if (city && state && !zip){
+		readSpellCheck(city, state, zip, loadOriginFieldsFromObject);
 	}
 }
 
 function loadOriginFromCode(){
 	clearValidationErrors();
 	code = $('#originCode').val();
+	client = $('#clientGroup').val();
 	if (!code){
 		return;
 	}
-	$.get(locationByCodeUrl, {locationCode : code}, function(data){
+	$.get(locationByCodeUrl, {client: client, locationCode : code}, function(data){
 		loadOriginFieldsFromObject(data);
 	}).fail(function(xhr, textStatus, errorThrown){
 		errorObj = eval("(" + xhr.responseText + ")")
@@ -170,19 +233,47 @@ function loadOriginFromCode(){
 	});
 }
 
-function loadDestFromCode(){
+function loadStopOffFromCode(){
 	clearValidationErrors();
-	code = $('#destCode').val();
+	code = $('#stopOffCode').val();
+	client = $('#clientGroup').val();
 	if (!code){
 		return;
 	}
-	$.get(locationByCodeUrl, {locationCode : code}, function(data){
+	$.get(locationByCodeUrl, {client: client, locationCode : code}, function(data){
+		loadStopOffFieldsFromObject(data);
+	}).fail(function(xhr, textStatus, errorThrown){
+		errorObj = eval("(" + xhr.responseText + ")")
+		alert('Unable to load origin from code. Error returned from server: ' + errorObj.message);
+		clearStopOffFields();
+	});
+}
+
+function loadDestFromCode(){
+	clearValidationErrors();
+	code = $('#destCode').val();
+	client = $('#clientGroup').val();
+	if (!code){
+		return;
+	}
+	$.get(locationByCodeUrl, {client: client, locationCode : code}, function(data){
 		loadDestFieldsFromObject(data);
 	}).fail(function(xhr, textStatus, errorThrown){
 		errorObj = eval("(" + xhr.responseText + ")")
 		alert('Unable to load destination from code. Error returned from server: ' + errorObj.message);
 		clearDestFields();
 	});
+}
+
+function clearStopOffFields(){
+	$('#stopOffCode').val('');
+	$('#stopOffName').val('');
+	$('#stopOffCity').val('');
+	$('#stopOffState').val('');
+	$('#stopOffZip').val('');
+	$('#stopOffCounty').val('');
+	$('#stopOffSPLC').val('');
+	$('#stopOffCountry').val('');
 }
 
 function clearOriginFields(){
@@ -208,6 +299,7 @@ function clearDestFields(){
 }
 
 function loadDestFieldsFromObject(data){
+	$('#destCode').val(data.code);
 	$('#destName').val(data.name);
 	$('#destCity').val(data.city);
 	$('#destState').val(data.state);
@@ -225,6 +317,16 @@ function loadOriginFieldsFromObject(data){
 	$('#originCounty').val(data.county);
 	$('#originSPLC').val(data.splc);
 	$('#originCountry').val(data.country);
+}
+
+function loadStopOffFieldsFromObject(data){
+	$('#stopOffName').val(data.name);
+	$('#stopOffCity').val(data.city);
+	$('#stopOffState').val(data.state);
+	$('#stopOffZip').val(data.zip);
+	$('#stopOffCounty').val(data.county);
+	$('#stopOffSPLC').val(data.splc);
+	$('#stopOffCountry').val(data.country);
 }
 
 function keyPressEvent(callback, nextElement){

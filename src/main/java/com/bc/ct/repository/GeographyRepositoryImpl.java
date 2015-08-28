@@ -20,7 +20,7 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 	
 	@Cacheable("geography")
 	@Override
-	public Location getMillLocation(String code) {
+	public Location getMillLocation(Optional<String>client, String code) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select CODE, ");
 		sql.append("NAME, ");
@@ -32,10 +32,14 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 		sql.append("COUNTY, ");
 		sql.append("COUNTRY, ");
 		sql.append("SPLC ");
-		sql.append("from LOCATION.CODES ");
+		if (client.isPresent()) {
+			sql.append("from ").append(client.get().toUpperCase()).append(".LOCATION.CODES ");
+		}else {
+			sql.append("from LOCATION.CODES ");	
+		}
 		sql.append("where CODE = ?");
 		
-		return jdbcTemplate.queryForObject(sql.toString(), new Object[] {code}, new LocationRowMapper());
+		return jdbcTemplate.queryForObject(sql.toString(), new Object[] {code.toUpperCase()}, new LocationRowMapper());
 	}
 	
 	@Override

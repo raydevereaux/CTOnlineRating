@@ -33,6 +33,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Universe"/>
+	<classpathentry kind="lib" path="src/main/resources/db/asjava.zip"/>
+	<classpathentry kind="lib" path="src/main/resources/db/unijdbc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

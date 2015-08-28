@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.bc.ct.CtOnlineRatingApplication;
 import com.bc.ct.beans.Location;
+import com.google.common.base.Optional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CtOnlineRatingApplication.class)
 public class GeographyRepositoryImplTest {
@@ -24,15 +25,24 @@ public class GeographyRepositoryImplTest {
 	GeographyRepository repo;
 
 	@Test
-		public void testGetMillLocation() throws Exception {
-			Location location = repo.getMillLocation("31");
-			assertThat(location, notNullValue());
-			assertThat(location.getCity(), IsEqualIgnoringCase.equalToIgnoringCase("KETTLE FALLS"));
-		}
+	public void testGetMillLocation() throws Exception {
+		Location kf = repo.getMillLocation(Optional.<String>of("BOISEW"), "31");
+		assertThat(kf, notNullValue());
+		assertThat(kf.getCity(), IsEqualIgnoringCase.equalToIgnoringCase("KETTLE FALLS"));
+		Location edmundston = repo.getMillLocation(Optional.<String>of("BOISEW"), "04R");
+		assertThat(edmundston, notNullValue());
+		assertThat(edmundston.getCity(), IsEqualIgnoringCase.equalToIgnoringCase("EDMUNDSTON"));
+	}
 
 	@Test
-		public void testGetAllMillLocations() throws Exception {
-			List<Location> allLocations = repo.getAllMillLocations();
-			assertThat(allLocations, hasSize(greaterThan(250)));
-		}
+	public void testGetAllMillLocations() throws Exception {
+		List<Location> allLocations = repo.getAllMillLocations();
+		assertThat(allLocations, hasSize(greaterThan(250)));
+	}
+
+	@Test
+	public void testGetSpellCheckLocations() throws Exception {
+		List<Location> locations = repo.getSpellCheckLocations("BOISE", "ID", Optional.<String>absent());
+		assertThat(locations, hasSize(1));
+	}
 }

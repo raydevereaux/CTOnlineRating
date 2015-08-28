@@ -37,11 +37,11 @@
 	
 	<div class="form-inline" th:fragment="addressBody(prefix)">
 		<div class="row col-sm-12" style="margin-bottom: 5px;">
-			<div class="form-group" th:if="${prefix != 'dest'}">
+			<div class="form-group" th:if="${prefix == 'origin'}">
 				<label class="control-label" th:for="${prefix} + 'Search'">Search</label>
 				<input th:id="${prefix} + 'Search'" type="text" placeholder="Search" class="form-control typeahead" />
 			</div>
-			<div class="form-group" th:style="${prefix != 'dest'} ? 'margin-left: 15px;'">
+			<div class="form-group" th:style="${prefix == 'origin'} ? 'margin-left: 15px;'">
 				<label class="control-label" th:for="${prefix} + 'LocationCode'">Location Code</label>
 				<input th:id="${prefix} + 'Code'" th:field="*{code}" type="text" placeholder="Code" class="form-control"/>
 			</div>
@@ -82,11 +82,11 @@
 	
 	<div class="form-inline" th:fragment="stopOffAddressBody(prefix)">
 		<div class="row col-sm-12" style="margin-bottom: 5px;">
-		<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="control-label" th:for="${prefix} + 'Search'">Search</label>
 				<input th:id="${prefix} + 'Search'" type="text" placeholder="Search" class="form-control typeahead" />
-			</div>
-			<div class="form-group" style="margin-left: 15px;">
+			</div> -->
+			<div class="form-group">
 				<label class="control-label" th:for="${prefix} + 'LocationCode'">Location Code</label>
 				<input th:id="${prefix} + 'Code'" type="text" placeholder="Code" class="form-control"/>
 			</div>
@@ -98,15 +98,15 @@
 		<div class="row col-sm-12" style="margin-bottom: 5px;">
 			<div class="form-group">
 				<label class="control-label" th:for="${prefix} + 'City'">City</label>
-				<input th:id="${prefix} + 'City'" type="text" placeholder="City" class="form-control" readonly="readonly" tabindex="-1"/>
+				<input th:id="${prefix} + 'City'" type="text" placeholder="City" class="form-control"/>
 			</div>
 			<div class="form-group" style="margin-left: 15px;">
 				<label class="control-label" th:for="${prefix} + 'State'">State</label>
-				<input th:id="${prefix} + 'State'" type="text" placeholder="State" class="form-control" readonly="readonly" tabindex="-1"></input>
+				<input th:id="${prefix} + 'State'" type="text" placeholder="State" class="form-control"></input>
 			</div>
 			<div class="form-group" style="margin-left: 15px;">
 				<label class="control-label" th:for="${prefix} + 'Zip'">Zip</label>
-				<input th:id="${prefix} + 'Zip'" type="text" placeholder="Zip Code" class="form-control" readonly="readonly" tabindex="-1"></input>
+				<input th:id="${prefix} + 'Zip'" type="text" placeholder="Zip Code" class="form-control"></input>
 			</div>
 		</div>
 		<div class="row col-sm-12">

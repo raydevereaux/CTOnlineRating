@@ -24,11 +24,11 @@ public class GeographyServiceImpl implements GeographyService {
 	private GeographyRepository repo;
 	
 	@Override
-	public Location getMillLocation(String code) {
+	public Location getMillLocation(Optional<String>client, String code) {
 		if (StringUtils.isEmpty(code)) {
 			throw new IllegalArgumentException("Location code cannot be empty");
 		}
-		return repo.getMillLocation(code);
+		return repo.getMillLocation(client, code);
 	}
 
 	@Override

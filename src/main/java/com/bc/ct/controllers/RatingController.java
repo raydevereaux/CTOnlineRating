@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bc.ct.beans.Location;
 import com.bc.ct.repository.GeographyRepository;
 import com.bc.ct.ws.RateClient;
+import com.bc.ct.ws.model.ClientGroup;
 import com.bc.ct.ws.model.RateRequest;
 import com.bc.ct.ws.model.RateRequest.Commoditys;
 import com.bc.ct.ws.model.RateRequest.Commoditys.Commodity;
 import com.bc.ct.ws.model.RateRequest.Stops;
 import com.bc.ct.ws.model.RateRequest.Stops.Stop;
 import com.bc.ct.ws.model.RateResponse;
-import com.bc.ct.ws.model.ShipMode;
+import com.google.common.base.Optional;
 
 @Controller
 public class RatingController {
@@ -47,13 +48,16 @@ public class RatingController {
 	@ResponseBody
 	private Location refreshODPairs() {
 		System.out.println("OD Pairs Refreshed");
-		Location location = repo.getMillLocation("31");
+		Location location = repo.getMillLocation(Optional.<String>of("BOISEW"), "31");
 		return location;
 	}
 	
 	@RequestMapping(value = "/rate", method = RequestMethod.POST)
 	private String rate(@ModelAttribute RateRequest rateRequest, Model model) {
-		rateRequest.getDest().setZip(null);
+		//Clear zip for BOISEW
+		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
+			rateRequest.getDest().setZip(null);	
+		}
 		RateResponse response = rateClient.getRate(rateRequest);
 		model.addAttribute("rateResponse", response);
 		return "ratingQuotes :: ratingQuoteTable";

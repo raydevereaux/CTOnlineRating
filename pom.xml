@@ -95,18 +95,14 @@
 			<version>3.3.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ibm.u2</groupId>
+			<groupId>uni</groupId>
 			<artifactId>asjava</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/resources/db/asjava.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>com.ibm.u2</groupId>
+			<groupId>uni</groupId>
 			<artifactId>unijdbc</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/resources/db/unijdbc.jar</systemPath>
 		</dependency>
 	</dependencies>
 	
@@ -137,6 +133,11 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>in-project</id>
+			<name>In Project Repo</name>
+			<url>file://${project.basedir}/src/main/resources/db</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>

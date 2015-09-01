@@ -33,7 +33,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/resources/db/unijdbc.jar"/>
-	<classpathentry kind="lib" path="src/main/resources/db/asjava.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

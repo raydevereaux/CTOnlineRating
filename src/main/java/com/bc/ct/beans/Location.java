@@ -1,6 +1,5 @@
 package com.bc.ct.beans;
 
-import com.bc.ct.ws.model.RateRequest;
 import com.bc.ct.ws.model.RateRequest.Dest;
 import com.bc.ct.ws.model.RateRequest.Origin;
 

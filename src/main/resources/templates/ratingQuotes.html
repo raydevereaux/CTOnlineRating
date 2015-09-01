@@ -4,7 +4,7 @@
 	<div th:fragment="ratingQuoteTable" th:object="${rateResponse}">
 		<h4 th:if="${rateResponse.quotes == null || #lists.isEmpty(rateResponse.quotes)}">No rates found for the given query.  Double check origin, destination, commodity, weight, and ship date.</h4>
 		<table id="quoteTable" class="table table-striped table-hover table-responsive" th:unless="${rateResponse.quotes == null || #lists.isEmpty(rateResponse.quotes)}">
-			<caption>Click row for rate details<span class="pull-right" style="margin-right:20px;"><i class="fa fa-file-excel-o fa-2x text-success" style="cursor:pointer;"></i></span></caption>
+			<caption>Click row for rate details<span class="pull-right" style="margin-right:20px;"><i id="excelIcon" class="fa fa-file-excel-o fa-2x text-success" style="cursor:pointer;"></i></span></caption>
 			<thead>
 				<tr>
 					<th>Rate Number</th>

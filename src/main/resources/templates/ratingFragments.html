@@ -61,7 +61,7 @@
 					<div class="row col-sm-12">
 						<div class="form-group">
 							<label class="control-label" for="commodityDesc">Description</label>
-							<input th:id="commodityDesc" type="text" placeholder="Description" class="form-control" style="width:16em;"/>
+							<input th:id="commodityDesc" th:field="*{Commoditys[0].Commodity.desc}" type="text" placeholder="Description" class="form-control" style="width:16em;"/>
 						</div>
 						<div class="form-group" style="margin-left: 15px;">
 							<label class="control-label" for="commodityCode">Code</label>

@@ -4,6 +4,7 @@ var spellCheckMap = {};
 var spellCheckFocusElement;
 var spellCheckSource;
 var stopOffs = [];
+var lastRateFormObj;
 
 $(document).ready(function(){
 	init();
@@ -106,6 +107,8 @@ function addListeners(){
     	$(this).addClass('active');
     });
 	$('#stopOffModalAdd').click(addStopOff);
+	
+	$('body').on('click', '#excelIcon', downloadExcelFile);
 	
 	//Spell Check Stuff
 	$('#useSpellCheckBtn').on('click', function(){
@@ -521,6 +524,17 @@ function rateSuccess(rateResponse, statusText, xhr, form){
 	$('#quoteTable tbody').on('click', 'tr', function(){
 		quoteClicked($(this));
 	});
+	lastRateFormObj = $('#ratingForm').formSerialize();
+	$('body').remove('iframe');
+}
+
+function downloadExcelFile(){
+	window.location.href = rateExcelUrl + '?' + lastRateFormObj;
+//	$.post(rateExcelUrl, lastRateFormObj, function() {
+//	}).complete(function(jqXHR, textStatus){
+//		alert(jqXHR.url);
+//		$("body").append("<iframe src='" + jqXHR.url+ "' style='display: none;' ></iframe>");
+//	}); 
 }
 
 function quoteClicked(tableRowElement){

@@ -1,5 +1,11 @@
 package com.bc.ct.controllers;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bc.ct.beans.Location;
+import com.bc.ct.excel.RateQuoteExcel;
 import com.bc.ct.repository.GeographyRepository;
 import com.bc.ct.service.CacheService;
-import com.bc.ct.ws.RateClient;
-import com.bc.ct.ws.model.ClientGroup;
+import com.bc.ct.service.RatingService;
 import com.bc.ct.ws.model.RateRequest;
 import com.bc.ct.ws.model.RateRequest.Commoditys;
 import com.bc.ct.ws.model.RateRequest.Commoditys.Commodity;
@@ -27,9 +33,11 @@ public class RatingController {
 	@Autowired
 	private GeographyRepository repo;
 	@Autowired
-	private RateClient rateClient;
+	private RatingService rateService;
 	@Autowired
 	private CacheService cacheService;
+	
+	private Logger logger = LoggerFactory.getLogger(RatingController.class);
 	
 	@RequestMapping("/")
 	private String index(Model model) {
@@ -56,13 +64,22 @@ public class RatingController {
 	
 	@RequestMapping(value = "/rate", method = RequestMethod.POST)
 	private String rate(@ModelAttribute RateRequest rateRequest, Model model) {
-		//Clear zip for BOISEW
-		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
-			rateRequest.getDest().setZip(null);	
-		}
-		RateResponse response = rateClient.getRate(rateRequest);
-		model.addAttribute("rateResponse", response);
+		model.addAttribute("rateResponse", rateService.rate(rateRequest));
 		return "ratingQuotes :: ratingQuoteTable";
+	}
+
+	@RequestMapping(value = "/rateExcel", method = RequestMethod.GET)
+	private void rateExcel(@ModelAttribute RateRequest rateRequest, HttpServletResponse response) {
+		RateResponse rateResponse = rateService.rate(rateRequest);
+		RateQuoteExcel excel = new RateQuoteExcel(rateRequest, rateResponse);
+		try {
+			response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + excel.getFileName() + ".xlsx\"");
+			excel.write(response.getOutputStream());	
+		}catch(IOException ex) {
+			logger.info("Error while writing excel to output stream.", ex);
+			throw new RuntimeException("IOError while writing dealer sales diff report to output stream.");
+		}
 	}
 	
 	@RequestMapping(value = "/clearAllCaches")

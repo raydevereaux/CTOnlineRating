@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,20 +26,31 @@ public class GeographyServiceImpl implements GeographyService {
 	private GeographyRepository repo;
 	
 	@Override
+	@Cacheable("geography")
 	public Location getMillLocation(Optional<String>client, String code) {
 		if (StringUtils.isEmpty(code)) {
 			throw new IllegalArgumentException("Location code cannot be empty");
 		}
-		return repo.getMillLocation(client, code);
+		try {
+			return repo.getMillLocation(client, code);	
+		}catch(EmptyResultDataAccessException e) {
+			if (client.isPresent()) {
+				return repo.getMillLocation(Optional.<String>absent(), code); 
+			}else {
+				throw e;
+			}
+		}
 	}
 
 	@Override
+	@Cacheable("geography")
 	public List<Location> getAllMillLocations() {
 		return repo.getAllMillLocations();
 	}
 	
 	@Override
-	public List<Location> getSpellCheckLocations(String city, String state, final Optional<String> zip) {
+	@Cacheable("geography")
+	public List<Location> getSpellCheckLocations(final String city, final String state, final Optional<String> zip) {
 		List<Location> locs = repo.getSpellCheckLocations(city, state, zip);
 		List<Location> returnLocs = Lists.newArrayList();
 		String delimiter = "�";
@@ -85,15 +98,16 @@ public class GeographyServiceImpl implements GeographyService {
 				}
 			}
 		}
+
+		//Only return those locations that match the city, state, and zip if present
+		returnLocs = Lists.newArrayList(Iterables.filter(returnLocs, new Predicate<Location>() {
+			@Override
+			public boolean apply(Location input) {
+				return input.getCity().contains(city) && input.getState().contains(state) &&
+						(zip.isPresent() ? zip.get().equals(input.getZip()) : true);
+			}
+		}));
 		
-		if (zip.isPresent()) {
-			returnLocs = Lists.newArrayList(Iterables.filter(returnLocs, new Predicate<Location>() {
-				@Override
-				public boolean apply(Location input) {
-					return zip.get().equals(input.getZip());
-				}
-			}));	
-		}
 		return returnLocs;
 	}
 }

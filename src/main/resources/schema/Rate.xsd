@@ -99,6 +99,8 @@
             <xsd:attribute name="shipMode" type="tns:shipMode" use="required" />
             <xsd:attribute name="currency" type="xsd:string" default="USD"/>
             <xsd:attribute name="roundTrip" type="xsd:boolean" use="optional"  default="false"/>
+            <attribute default="OP" name="freightTerms" type="xsd:string" use="optional"/>
+            <attribute default="PPD" name="prepaidCollect" type="xsd:string" use="optional"/>
           </xsd:complexType>
 	</xsd:element>
 	<xsd:element name="RateResponse">

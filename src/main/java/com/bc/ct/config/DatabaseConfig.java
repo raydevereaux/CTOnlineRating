@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.ibm.u2.jdbcx.UniJDBCDataSource;
 
 @Configuration
-@Profile("test")
+@Profile("local")
 public class DatabaseConfig {
 
 	@Value("${unidb.account}")

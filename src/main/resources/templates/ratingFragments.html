@@ -112,11 +112,11 @@
 			</div>
 			<div class="col-sm-2 form-group">
 				<label class="control-label" for="terms">Terms</label>
-				<select id="terms" class="form-control selectpicker" data-width="auto">
-					<option value="O-P">Outbound Prepaid</option>
-					<option value="O-C">Outbound Collect</option>
-					<option value="I-P">Inbound Prepaid</option>
-					<option value="I-C">Inbound Collect</option>
+				<select id="terms" class="form-control selectpicker" data-width="auto" th:field="*{freightTerms}">
+					<option value="OP">Outbound Prepaid</option>
+					<option value="OC">Outbound Collect</option>
+					<option value="IP">Inbound Prepaid</option>
+					<option value="IC">Inbound Collect</option>
 				</select>
 			</div>
 			<div class="col-sm-2 form-group">

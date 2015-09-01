@@ -1,7 +1,6 @@
 package com.bc.ct.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bc.ct.beans.Location;
 import com.bc.ct.repository.GeographyRepository;
+import com.bc.ct.service.CacheService;
 import com.bc.ct.ws.RateClient;
 import com.bc.ct.ws.model.ClientGroup;
 import com.bc.ct.ws.model.RateRequest;
@@ -28,6 +28,8 @@ public class RatingController {
 	private GeographyRepository repo;
 	@Autowired
 	private RateClient rateClient;
+	@Autowired
+	private CacheService cacheService;
 	
 	@RequestMapping("/")
 	private String index(Model model) {
@@ -64,9 +66,10 @@ public class RatingController {
 	}
 	
 	@RequestMapping(value = "/clearAllCaches")
-	@CacheEvict(value = {"commodity", "carrier", "geography"}, allEntries=true)
 	@ResponseBody
 	private String clearAllCaches() {
+		cacheService.clearAllCaches();
 		return "Cleared all caches from the CT Online Rating.";
 	}
+	
 }

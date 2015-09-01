@@ -1,9 +1,8 @@
 var commodityBloodHound;
 var originBloodHound;
-var destBloodHound;
 var spellCheckMap = {};
 var spellCheckFocusElement;
-var spellCheckSourceDest = false;
+var spellCheckSource;
 var stopOffs = [];
 
 $(document).ready(function(){
@@ -79,8 +78,10 @@ function refreshOriginDest(){
 	$('#refreshOd i').addClass('fa-spin');
 	commodityBloodHound.clearPrefetchCache();
 	commPromise = commodityBloodHound.initialize(true);
+	originBloodHound.clearPrefetchCache();
+	originPromise = originBloodHound.initialize(true);
 	
-	$.when(commPromise).then(function(){
+	$.when(commPromise, originPromise).then(function(){
 		$('#refreshOd i').removeClass()
 		.addClass('fa fa-check-circle fa-lg').delay(1500).fadeOut().queue(function(){
 			$(this).removeClass().addClass('fa fa-refresh fa-lg').fadeIn().dequeue();
@@ -99,6 +100,7 @@ function addListeners(){
 	$('#clearDestBtn').click(clearDestFields);
 	$('#destCity, #destState, #destZip').keydown(keyPressEvent(checkSpellCheckDest));
 	$('#originCity, #originState, #originZip').keydown(keyPressEvent(checkSpellCheckOrigin));
+	$('#stopOffCity, #stopOffState, #stopOffZip').keydown(keyPressEvent(checkSpellCheckStopOff));
 	$('#addressPickList').on('click', 'a.list-group-item', function(){
     	$(this).siblings().removeClass('active');
     	$(this).addClass('active');
@@ -107,10 +109,13 @@ function addListeners(){
 	
 	//Spell Check Stuff
 	$('#useSpellCheckBtn').on('click', function(){
-		if (spellCheckSourceDest){
-			loadDestFieldsFromObject(spellCheckMap[$('#addressPickList a.active').text()]);	
-		}else{
-			loadOriginFieldsFromObject(spellCheckMap[$('#addressPickList a.active').text()]);
+		spellCheckObj = spellCheckMap[$('#addressPickList a.active').text()];
+		if ('dest' == spellCheckSource){
+			loadDestFieldsFromObject(spellCheckObj);	
+		}else if ('origin' == spellCheckSource){
+			loadOriginFieldsFromObject(spellCheckObj);
+		}else if ('stopOff' == spellCheckSource){
+			loadStopOffFieldsFromObject(spellCheckObj);
 		}
 	});
 	$('#addressPickModal').on('keydown', function(e){
@@ -198,7 +203,7 @@ function removeStopOff(index){
 }
 
 function checkSpellCheckDest(){
-	spellCheckSourceDest = true;
+	spellCheckSource = 'dest';
 	city = $('#destCity').val();
 	state = $('#destState').val();
 	zip = $('#destZip').val();
@@ -208,12 +213,22 @@ function checkSpellCheckDest(){
 }
 
 function checkSpellCheckOrigin(){
-	spellCheckSourceDest = false;
+	spellCheckSource = 'origin';
 	city = $('#originCity').val();
 	state = $('#originState').val();
 	zip = $('#originZip').val();
 	if (city && state && !zip){
 		readSpellCheck(city, state, zip, loadOriginFieldsFromObject);
+	}
+}
+
+function checkSpellCheckStopOff(){
+	spellCheckSource = 'stopOff';
+	city = $('#stopOffCity').val();
+	state = $('#stopOffState').val();
+	zip = $('#stopOffZip').val();
+	if (city && state && !zip){
+		readSpellCheck(city, state, zip, loadStopOffFieldsFromObject);
 	}
 }
 
@@ -371,9 +386,58 @@ function refreshCarrierList(client){
 function populateTypeAheads(){
 	$('#commodityDesc').val('');
 	$('#commodityCode').val('');
-//	populateTypeAhead($('#originSearch'), url);
-//	populateTypeAhead($('#destSearch'), url);
+	populateOriginTypeAhead();
 	populateCommodityTypeAhead();
+}
+
+function populateOriginTypeAhead(){
+	originBloodHound = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('desc'),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		prefetch: {
+			url: allMillLocationsUrl,
+			ttl: 11400000, //Time to live set to 4 hours
+			// the json file contains an array of strings, but the Bloodhound
+			// suggestion engine expects JavaScript objects so this converts all of
+			// those strings
+			filter: function(list) {
+				return $.map(list, function(mill) { 
+					desc = '';
+					if (mill.code){
+						desc = desc + mill.code + ' - ';
+					}
+					if (mill.name){
+						desc = desc + mill.name + ' - ';
+					}
+					if (mill.city){
+						desc = desc + mill.city + ' - ';
+					}
+					if (mill.state){
+						desc = desc + mill.state;
+					}
+					return { code: mill.code, city: mill.city, state: mill.state,
+					zip: mill.zip, splc: mill.splc, county: mill.county, country: mill.country, name: mill.name,
+					desc: desc}; });
+			}
+		}
+	});
+	originBloodHound.initialize();
+    $('#originSearch').typeahead('destroy');
+	// passing in `null` for the `options` arguments will result in the default
+	// options being used
+    $('#originSearch').typeahead({
+		hint: true,
+		highlight: true
+	}, {
+		name: 'millLocations',
+		displayKey: 'desc',
+		source: originBloodHound.ttAdapter()
+	}).on('typeahead:selected', function (obj, datum) {
+		loadOriginFieldsFromObject(datum);
+		$('#originCode').val(datum.code);
+		$('#originName').val(datum.name);
+        $('#destCode').focus();
+    });
 }
 
 function populateCommodityTypeAhead(){
@@ -491,18 +555,10 @@ function validateForm(){
 		validates = false;
 	}
 	
-	if (validates){
-		$('#spinner').toggleClass('hide');
-	}
+	$('#spinner').toggleClass('hide');
 	return validates;
 }
 
 function clearValidationErrors(){
 	$('div .form-group').removeClass('has-error');
 }
-
-function constructRateRequest(){
-	client = $('#clientGroup').val();
-	return JSON.stringify({clientGroup : client});
-}
-

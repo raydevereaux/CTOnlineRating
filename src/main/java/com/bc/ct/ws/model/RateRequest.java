@@ -126,6 +126,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *       &lt;attribute name="shipMode" use="required" type="{http://www.boiseinc.com/cc}shipMode" />
  *       &lt;attribute name="currency" type="{http://www.w3.org/2001/XMLSchema}string" default="USD" />
  *       &lt;attribute name="roundTrip" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" />
+ *       &lt;attribute name="freightTerms" type="{http://www.w3.org/2001/XMLSchema}string" default="OP" />
+ *       &lt;attribute name="prepaidCollect" type="{http://www.w3.org/2001/XMLSchema}string" default="PPD" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -175,6 +177,10 @@ public class RateRequest {
     protected String currency;
     @XmlAttribute(name = "roundTrip")
     protected Boolean roundTrip;
+    @XmlAttribute(name = "freightTerms")
+    protected String freightTerms;
+    @XmlAttribute(name = "prepaidCollect")
+    protected String prepaidCollect;
 
     /**
      * Gets the value of the equipment property.
@@ -552,6 +558,62 @@ public class RateRequest {
      */
     public void setRoundTrip(Boolean value) {
         this.roundTrip = value;
+    }
+
+    /**
+     * Gets the value of the freightTerms property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFreightTerms() {
+        if (freightTerms == null) {
+            return "OP";
+        } else {
+            return freightTerms;
+        }
+    }
+
+    /**
+     * Sets the value of the freightTerms property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFreightTerms(String value) {
+        this.freightTerms = value;
+    }
+
+    /**
+     * Gets the value of the prepaidCollect property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPrepaidCollect() {
+        if (prepaidCollect == null) {
+            return "PPD";
+        } else {
+            return prepaidCollect;
+        }
+    }
+
+    /**
+     * Sets the value of the prepaidCollect property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPrepaidCollect(String value) {
+        this.prepaidCollect = value;
     }
 
 

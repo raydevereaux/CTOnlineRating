@@ -20,6 +20,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 	private JdbcTemplate jdbcTemplate;
 	
 	@Override
+	@Cacheable("commodity")
 	public List<Integer> getAllCommodityCodes() {
 		String sql = "SELECT COMMODITY.CODE FROM NMFC ORDER BY COMMODITY.CODE";
 		return jdbcTemplate.query(sql, new RowMapper<Integer>() {
@@ -31,6 +32,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 	}
 
 	@Override
+	@Cacheable("commodity")
 	public List<Commodity> getCommodityList() {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select COMMODITY.CODE, BOL.DESC, CLASS, DESCRIPTION ");

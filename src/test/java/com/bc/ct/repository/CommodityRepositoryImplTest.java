@@ -37,6 +37,6 @@ public class CommodityRepositoryImplTest {
 	@Test
 	public void testGetCommodityListWithClient() throws Exception {
 		List<Commodity> commodityList = repo.getCommodityList("BOISEW");
-		assertThat(commodityList, hasSize(greaterThan(50)));
+		assertThat(commodityList, hasSize(greaterThan(40)));
 	}
 }

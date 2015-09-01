@@ -94,6 +94,20 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ibm.u2</groupId>
+			<artifactId>asjava</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/db/asjava.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.u2</groupId>
+			<artifactId>unijdbc</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/db/unijdbc.jar</systemPath>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -103,16 +117,6 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 				</plugin>
-				<plugin>
-			        <groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<configuration>
-						<additionalClasspathElements>
-							<additionalClasspathElement>${basedir}/src/main/resources/db/asjava.jar</additionalClasspathElement>
-							<additionalClasspathElement>${basedir}/src/main/resources/db/unijdbc.jar</additionalClasspathElement>
-						</additionalClasspathElements>
-					</configuration>
-		        </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

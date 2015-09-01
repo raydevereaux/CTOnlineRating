@@ -103,23 +103,16 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 				</plugin>
-				<!-- <plugin>
-				    <groupId>org.lesscss</groupId>
-				    <artifactId>lesscss-maven-plugin</artifactId>
-				    <version>1.7.0.1.1</version>
-				    <configuration>
-				        <sourceDirectory>${project.basedir}/src/main/resources/static/less</sourceDirectory>
-				        <outputDirectory>${project.build.directory}/${project.build.finalName}/css</outputDirectory>
-				        <compress>true</compress>
-				    </configuration>
-				    <executions>
-				        <execution>
-				            <goals>
-				                <goal>compile</goal>
-				            </goals>
-				        </execution>
-				    </executions>
-				</plugin> -->
+				<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<additionalClasspathElements>
+							<additionalClasspathElement>${basedir}/src/main/resources/db/asjava.jar</additionalClasspathElement>
+							<additionalClasspathElement>${basedir}/src/main/resources/db/unijdbc.jar</additionalClasspathElement>
+						</additionalClasspathElements>
+					</configuration>
+		        </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

@@ -64,7 +64,6 @@ public class RatingController {
 	
 	@RequestMapping(value = "/rate", method = RequestMethod.POST)
 	private String rate(@ModelAttribute RateRequest rateRequest, Model model) {
-		logger.error("IN RATE CONTROLLER");
 		model.addAttribute("rateResponse", rateService.rate(rateRequest));
 		return "ratingQuotes :: ratingQuoteTable";
 	}

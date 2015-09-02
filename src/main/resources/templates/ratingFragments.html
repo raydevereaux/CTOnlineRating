@@ -28,6 +28,7 @@
 		<div th:replace="ratingFragments :: footerInputs"></div>
 		<div th:replace="ratingFragments :: stopOffModal"></div>
 		<div th:replace="ratingFragments :: addressPickModal"></div>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
 		
 	<!-- Page Header -->

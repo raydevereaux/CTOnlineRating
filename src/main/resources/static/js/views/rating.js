@@ -66,6 +66,9 @@ function setDefaults(){
     $('#ratingForm').ajaxForm({
     	beforeSubmit: validateForm,
     	success: rateSuccess,
+    	complete: function(){
+    		$('#spinner').addClass('hide');
+    	},
     	type: 'POST'
     });
     $('#rateBtn').on('click', function(){

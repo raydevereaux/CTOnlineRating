@@ -4,9 +4,9 @@
 <head th:fragment="headerFragment(title)">
 	<title th:text="'CT Online Rating' + (${#strings.isEmpty(title)} ? '' : ' - ' + ${title})"></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
-	<!-- <meta name="_csrf" th:content="${_csrf.token}" />
-	default header name is X-CSRF-TOKEN
-	<meta name="_csrf_header" th:content="${_csrf.headerName}" /> -->
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 	
 	<!-- Bootstrap Customization URL: http://getbootstrap.com/customize/?id=b52e09492cb44b6e66cd -->
 	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>

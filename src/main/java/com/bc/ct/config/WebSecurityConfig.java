@@ -14,15 +14,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/", "/rate").permitAll()
-                .anyRequest().permitAll()
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();
+                .anyRequest().permitAll();
+//                .and()
+//            .formLogin()
+//                .loginPage("/login")
+//                .permitAll()
+//                .and()
+//            .logout()
+//                .permitAll();
     }
 
     @Autowired

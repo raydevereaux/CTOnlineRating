@@ -367,6 +367,7 @@ function keyPressEvent(callback, nextElement){
 function clientChanged(){
 	clearValidationErrors();
 	client = $('#clientGroup').val();
+	$('#commodityClass').parent('.form-group').toggleClass('hide', 'BOISEW' == client);
 	refreshCarrierList(client);
 	populateTypeAheads();
 }
@@ -454,7 +455,7 @@ function populateCommodityTypeAhead(){
 			// suggestion engine expects JavaScript objects so this converts all of
 			// those strings
 			filter: function(list) {
-				return $.map(list, function(commodity) { return { code: commodity.code, desc: commodity.desc}; });
+				return $.map(list, function(commodity) { return { code: commodity.code, desc: commodity.desc, descCode: commodity.desc + ' ' + commodity.code, commClass: commodity.commClass}; });
 			}
 		}
 	});
@@ -466,12 +467,15 @@ function populateCommodityTypeAhead(){
 		hint: true,
 		highlight: true
 	}, {
+		minLength: 2,
+		limit: 20,
 		name: 'commodities',
-		displayKey: 'desc',
+		displayKey: 'descCode',
 		source: commodityBloodHound.ttAdapter()
 	}).on('typeahead:selected', function (obj, datum) {
 		$('#commodityDesc').val(datum.desc);
         $('#commodityCode').val(datum.code);
+        $('#commodityClass').val(datum.commClass);
         $('#commodityWeight').focus();
     });
 }
@@ -552,6 +556,14 @@ function quoteClicked(tableRowElement){
 function validateForm(){
 	$('div .form-group').removeClass('has-error');
 	validates = true;
+	if (!$('#carrierList').selectpicker('val')){
+		$('#carrierList').focus().closest('.form-group').addClass('has-error');
+		validates = false;
+	}
+	if (!$('#shipDate').val()){
+		$('#shipDate').focus().closest('.form-group').addClass('has-error');
+		validates = false;
+	}
 	if (!$('#commodityWeight').val() || $('#commodityWeight').val() <= 0){
 		$('#commodityWeight').focus().closest('.form-group').addClass('has-error');
 		validates = false;
@@ -568,8 +580,8 @@ function validateForm(){
 		$('#originSearch').focus().closest('.form-group').addClass('has-error');
 		validates = false;
 	}
-	
-	$('#spinner').toggleClass('hide');
+
+	$('#spinner').toggleClass('hide', !validates);
 	return validates;
 }
 

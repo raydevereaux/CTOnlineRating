@@ -57,7 +57,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 	@Override
 	public List<Commodity> getCommodityList(String client) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct b.COMMODITY.CODE, b.COMMODITY.DESCRIPTION ");
+		sql.append("select distinct b.COMMODITY.CODE, b.COMMODITY.DESCRIPTION, b.COMMODITY.CLASS ");
 		sql.append("from ").append(client).append(".HIST a, ");
 		sql.append(client).append(".HIST_COMM.INFO b ");
 		sql.append("where a.@ID eq b.@ID ");
@@ -75,6 +75,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 				Commodity comm = new Commodity();
 				comm.setCode(StringUtils.trimWhitespace(rs.getString(1)));
 				comm.setDesc(StringUtils.trimWhitespace(rs.getString(2)));
+				comm.setCommClass(StringUtils.trimWhitespace(rs.getString(3)));
 				return comm;
 			}
 		});

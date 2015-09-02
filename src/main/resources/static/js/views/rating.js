@@ -66,7 +66,8 @@ function setDefaults(){
     $('#ratingForm').ajaxForm({
     	beforeSubmit: validateForm,
     	success: rateSuccess,
-    	complete: function(){
+    	complete: function(jqxhr, textStatus){
+    		alert(jqxhr.responseText  + ' ' + textStatus);
     		$('#spinner').addClass('hide');
     	},
     	type: 'POST'

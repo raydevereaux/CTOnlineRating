@@ -104,10 +104,6 @@
 			<artifactId>unijdbc</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjtools</artifactId>
-		</dependency>
 	</dependencies>
 	
 	<build>

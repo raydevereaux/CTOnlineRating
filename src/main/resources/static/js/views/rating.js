@@ -67,7 +67,7 @@ function setDefaults(){
     	beforeSubmit: validateForm,
     	success: rateSuccess,
     	complete: function(jqXHR, textStatus){
-    		alert(jqXHR.responseText  + ' ' + textStatus + ' X_CSRF_TOKEN: ' + jqXHR.getResponseHeader('X-CSRF-TOKEN'));
+//    		alert(jqXHR.responseText  + ' ' + textStatus + ' X_CSRF_TOKEN: ' + jqXHR.getResponseHeader('X-CSRF-TOKEN'));
     		$('#spinner').addClass('hide');
     	},
     	type: 'POST'

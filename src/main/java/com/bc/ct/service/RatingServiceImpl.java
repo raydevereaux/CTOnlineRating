@@ -36,6 +36,7 @@ public class RatingServiceImpl implements RatingService {
 	public RateResponse rate(RateRequest rateRequest) {
 		//Clear zip for BOISEW
 		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
+			rateRequest.getOrigin().setZip(null);
 			rateRequest.getDest().setZip(null);	
 		}
 		//Remove commodity desc before send and re-set it afterwards

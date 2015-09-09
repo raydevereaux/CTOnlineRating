@@ -1,11 +1,16 @@
 package com.bc.ct.service;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 
+import com.bc.ct.util.XmlStringTransformer;
 import com.bc.ct.ws.RateClient;
 import com.bc.ct.ws.model.ClientGroup;
 import com.bc.ct.ws.model.RateQuote;
@@ -19,6 +24,10 @@ public class RatingServiceImpl implements RatingService {
 
 	@Autowired
 	private RateClient rateClient;
+	@Autowired
+	private Jaxb2Marshaller marshaller;
+	
+	private Logger logger = LoggerFactory.getLogger(RatingServiceImpl.class);
 	
 	/* (non-Javadoc)
 	 * @see com.bc.ct.service.RatingService#rate(com.bc.ct.ws.model.RateRequest)
@@ -34,6 +43,24 @@ public class RatingServiceImpl implements RatingService {
 		rateRequest.getCommoditys().get(0).getCommodity().setDesc(null);
 		RateResponse response = rateClient.getRate(rateRequest);
 		rateRequest.getCommoditys().get(0).getCommodity().setDesc(commodityDesc);
+		
+		//Set the rateRequest raw Xml string
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			marshaller.getJaxbContext().createMarshaller().marshal(rateRequest, baos);
+			response.setRateRequestXml(XmlStringTransformer.prettifyXmlString(new String(baos.toByteArray())));
+			baos.flush();
+			baos.close();
+		} catch (Exception e) {
+			logger.error("Unable to marshal rate request xml", e);
+		}
+		
+		sortQuotes(response);
+		
+		return response;
+	}
+	
+	private void sortQuotes(RateResponse response) {
 		//Sort quote by amount asc
 		Collections.sort(response.getQuotes(), new Comparator<RateQuote>() {
 			@Override
@@ -50,6 +77,5 @@ public class RatingServiceImpl implements RatingService {
 				};
 			});
 		}
-		return response;
 	}
 }

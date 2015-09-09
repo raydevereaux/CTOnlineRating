@@ -10,10 +10,12 @@ package com.bc.ct.ws.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -50,6 +52,8 @@ public class RateResponse {
     protected List<RateQuote> quotes;
     @XmlAttribute(name = "tracToken")
     protected String tracToken;
+    @XmlTransient
+    protected String rateRequestXml;
 
     /**
      * Gets the value of the failure property.
@@ -127,5 +131,13 @@ public class RateResponse {
     public void setTracToken(String value) {
         this.tracToken = value;
     }
+
+	public String getRateRequestXml() {
+		return rateRequestXml;
+	}
+
+	public void setRateRequestXml(String rateRequestXml) {
+		this.rateRequestXml = rateRequestXml;
+	}
 
 }

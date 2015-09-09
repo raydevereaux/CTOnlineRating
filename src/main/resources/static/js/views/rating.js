@@ -42,6 +42,20 @@ function setUpExampleRates(){
 		$('#destState').val('CA');
 		$('#destCounty').val('NAPA');
 	});
+	$('#exampleRate3').click(function(){
+		$('#clientGroup').selectpicker('val', 'BOISEP');
+		clientChanged();
+		$('#originCode').val('IF');
+		loadOriginFromCode();
+		$('#destCode').val('CH');
+		loadDestFromCode();
+		$('#commodityDesc').val('PRINTING PAPER');
+		$('#commodityCode').val('2621345');
+		$('#commodityWeight').val('150000');
+		setTimeout(function(){
+			$('#carrierList').selectpicker('val', 'RAIL');
+		}, 500);
+	});
 }
 
 function setDefaults(){
@@ -149,6 +163,9 @@ function addListeners(){
 	});
 	$('#addressPickModal').on('hidden.bs.modal', function(){
 		$(spellCheckFocusElement).focus();
+	});
+	$('body').on('show.bs.modal', '#rateRequestXmlModal', function(){
+		prettyPrint();
 	});
 }
 
@@ -570,6 +587,10 @@ function validateForm(){
 	}
 	if (!$('#commodityWeight').val() || $('#commodityWeight').val() <= 0){
 		$('#commodityWeight').focus().closest('.form-group').addClass('has-error');
+		validates = false;
+	}
+	if (!$('#commodityCode').val()){
+		$('#commodityCode').focus().closest('.form-group').addClass('has-error');
 		validates = false;
 	}
 	if (!$('#commodityDesc').val()){

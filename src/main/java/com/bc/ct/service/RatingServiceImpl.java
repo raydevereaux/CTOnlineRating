@@ -16,6 +16,7 @@ import com.bc.ct.ws.model.ClientGroup;
 import com.bc.ct.ws.model.RateQuote;
 import com.bc.ct.ws.model.RateQuote.Charges.Charge;
 import com.bc.ct.ws.model.RateRequest;
+import com.bc.ct.ws.model.RateRequest.Stops;
 import com.bc.ct.ws.model.RateResponse;
 import com.google.common.collect.ComparisonChain;
 
@@ -37,7 +38,10 @@ public class RatingServiceImpl implements RatingService {
 		//Clear zip for BOISEW
 		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
 			rateRequest.getOrigin().setZip(null);
-			rateRequest.getDest().setZip(null);	
+			rateRequest.getDest().setZip(null);
+			for (Stops stops : rateRequest.getStops()) {
+				stops.getStop().setZip(null);
+			}
 		}
 		//Remove commodity desc before send and re-set it afterwards
 		String commodityDesc = rateRequest.getCommoditys().get(0).getCommodity().getDesc();

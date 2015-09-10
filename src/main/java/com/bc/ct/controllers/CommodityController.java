@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bc.ct.beans.Commodity;
 import com.bc.ct.service.CommodityService;
+import com.google.common.base.Optional;
 
 @Controller
 public class CommodityController {
@@ -27,10 +28,6 @@ public class CommodityController {
 	@RequestMapping(value = "/commodityList.json", method = RequestMethod.GET)
 	@ResponseBody
 	private List<Commodity> getCommodityList(@RequestParam(required=false) String client) {
-		if (client == null) {
-			return commService.getCommodityList();
-		}else {
-			return commService.getCommodityList(client);	
-		}
+		return commService.getCommodityList(Optional.<String>fromNullable(client));	
 	}
 }

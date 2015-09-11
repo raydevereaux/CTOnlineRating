@@ -5,3 +5,19 @@
 .table-striped > tbody > tr:nth-of-type(2n+1){
 	background-color: #E8F0F9;
 }
+
+#originState, #destState, #commodityWeight, #commodityClass, #commodityCode, #originCode, #destCode{
+	width: 7em;	
+}
+
+#originZip, #destZip{
+	width: 10em;	
+}
+
+#originName, #destName{
+	width: 18em;
+}
+
+#commodityDesc{
+	width: 16em;
+}

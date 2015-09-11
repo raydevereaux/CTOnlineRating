@@ -420,7 +420,7 @@ function populateOriginTypeAhead(){
 		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('desc'),
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
 		prefetch: {
-			url: allMillLocationsUrl,
+			url: allMillLocationsUrl + '?client=' + $('#clientGroup').val(),
 			ttl: 11400000, //Time to live set to 4 hours
 			// the json file contains an array of strings, but the Bloodhound
 			// suggestion engine expects JavaScript objects so this converts all of
@@ -458,6 +458,7 @@ function populateOriginTypeAhead(){
 		displayKey: 'desc',
 		source: originBloodHound.ttAdapter()
 	}).on('typeahead:selected', function (obj, datum) {
+		$('#originSearch').typeahead('val', '');
 		loadOriginFieldsFromObject(datum);
 		$('#originCode').val(datum.code);
 		$('#originName').val(datum.name);
@@ -467,10 +468,11 @@ function populateOriginTypeAhead(){
 
 function populateCommodityTypeAhead(){
 	commodityBloodHound = new Bloodhound({
-		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('desc'),
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('descCode'),
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
 		prefetch: {
-			url: commodityUrl + '?client=' + $('#clientGroup').val(),
+//			url: commodityUrl + '?client=' + $('#clientGroup').val(),
+			url: commodityUrl,
 			ttl: 11400000, //Time to live set to 4 hours
 			// the json file contains an array of strings, but the Bloodhound
 			// suggestion engine expects JavaScript objects so this converts all of
@@ -494,10 +496,10 @@ function populateCommodityTypeAhead(){
 		displayKey: 'descCode',
 		source: commodityBloodHound.ttAdapter()
 	}).on('typeahead:selected', function (obj, datum) {
-		$('#commodityDesc').val(datum.desc);
+		$('#commodityDesc').typeahead('val', datum.desc);
         $('#commodityCode').val(datum.code);
         $('#commodityClass').val(datum.commClass);
-        $('#commodityWeight').focus();
+        $('#commodityWeight').focus().select();
     });
 }
 

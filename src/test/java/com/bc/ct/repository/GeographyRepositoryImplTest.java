@@ -35,10 +35,10 @@ public class GeographyRepositoryImplTest {
 	}
 
 	@Test
-	public void testGetAllMillLocations() throws Exception {
-		List<Location> allLocations = repo.getAllMillLocations();
-		assertThat(allLocations, hasSize(greaterThan(250)));
-	}
+		public void testGetMillLocations() throws Exception {
+			List<Location> allLocations = repo.getMillLocations(Optional.<String>absent());
+			assertThat(allLocations, hasSize(greaterThan(250)));
+		}
 
 	@Test
 	public void testGetSpellCheckLocations() throws Exception {

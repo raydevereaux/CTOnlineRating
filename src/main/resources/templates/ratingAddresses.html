@@ -38,7 +38,7 @@
 	<div class="form-inline" th:fragment="addressBody(prefix)">
 		<div class="row col-sm-12" style="margin-bottom: 5px;">
 			<div class="form-group" th:if="${prefix == 'origin'}">
-				<label class="control-label" th:for="${prefix} + 'Search'">Search</label>
+				<label class="control-label" th:for="${prefix} + 'Search'" style="margin-top:5px;">Search</label>
 				<input th:id="${prefix} + 'Search'" type="text" placeholder="Search" class="form-control typeahead" />
 			</div>
 			<div class="form-group" th:style="${prefix == 'origin'} ? 'margin-left: 15px;'">

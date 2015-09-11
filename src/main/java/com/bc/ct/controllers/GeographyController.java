@@ -21,8 +21,8 @@ public class GeographyController {
 	
 	@RequestMapping(value = "/allMillLocations.json", method = RequestMethod.GET)
 	@ResponseBody
-	private List<Location> getAllMillLocations() {
-		return geoService.getAllMillLocations();
+	private List<Location> getAllMillLocations(@RequestParam(required=false) String client) {
+		return geoService.getAllMillLocations(Optional.fromNullable(client));
 	}
 	
 	@RequestMapping(value = "/millLocationByCode.json", method = RequestMethod.GET)

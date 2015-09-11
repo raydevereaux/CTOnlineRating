@@ -43,7 +43,7 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 	}
 	
 	@Override
-	public List<Location> getAllMillLocations() {
+	public List<Location> getMillLocations(Optional<String> client) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select CODE, ");
 		sql.append("NAME, ");
@@ -55,8 +55,11 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 		sql.append("COUNTY, ");
 		sql.append("COUNTRY, ");
 		sql.append("SPLC ");
-		sql.append("from LOCATION.CODES");
-		
+		if (client.isPresent()) {
+			sql.append("from ").append(client.get().toUpperCase()).append(".LOCATION.CODES ");
+		}else {
+			sql.append("from LOCATION.CODES ");	
+		}
 		return jdbcTemplate.query(sql.toString(), new LocationRowMapper());
 	}
 	

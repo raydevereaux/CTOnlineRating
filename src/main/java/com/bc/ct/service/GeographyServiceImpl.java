@@ -1,5 +1,7 @@
 package com.bc.ct.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import com.bc.ct.beans.Location;
 import com.bc.ct.repository.GeographyRepository;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -44,8 +47,13 @@ public class GeographyServiceImpl implements GeographyService {
 
 	@Override
 	@Cacheable("geography")
-	public List<Location> getAllMillLocations() {
-		return repo.getAllMillLocations();
+	public List<Location> getAllMillLocations(Optional<String> client) {
+		List<Location> locations = Lists.newArrayList();
+		if (client.isPresent()) {
+			locations.addAll(repo.getMillLocations(client));
+		}
+		locations.addAll(repo.getMillLocations(Optional.<String>absent()));
+		return locations;
 	}
 	
 	@Override
@@ -107,6 +115,16 @@ public class GeographyServiceImpl implements GeographyService {
 						(zip.isPresent() ? zip.get().equals(input.getZip()) : true);
 			}
 		}));
+		
+		//Sort ignoring space on the city.  This keeps El Paso Fur lower than El Paso on the returned list.
+		Collections.sort(returnLocs, new Comparator<Location>() {
+			@Override
+			public int compare(Location o1, Location o2) {
+				return ComparisonChain.start().compare(StringUtils.trimAllWhitespace(o1.getCity()), StringUtils.trimAllWhitespace(o2.getCity()))
+						.compare(o1.getState(),  o2.getState()).compare(o1.getZip(), o2.getZip())
+						.compare(o1.getCounty(), o2.getCounty()).result();
+			}
+		});
 		
 		return returnLocs;
 	}

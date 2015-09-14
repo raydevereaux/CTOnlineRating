@@ -480,21 +480,34 @@ function populateCommodityTypeAhead(){
 			filter: function(list) {
 				return $.map(list, function(commodity) { return { code: commodity.code, desc: commodity.desc, descCode: commodity.desc + ' ' + commodity.code, commClass: commodity.commClass}; });
 			}
-		}
+		},
+		identify: function(comm){return comm.code;}
 	});
-	commodityBloodHound.initialize();
+	
+	function commoditiesWithDefaults(q, sync){
+		if (q === '' && $('#commodityDesc').val() === ''){
+			if ('BOISEW' === $('#clientGroup').val()){
+				//Beams, Lumber, Particleboard, Plywood
+				sync(commodityBloodHound.get('2439100', '2421184', '2499610','2432158'));	
+			}
+		}else{
+			commodityBloodHound.search(q, sync);
+		}
+	}
+//	commodityBloodHound.initialize();
     $('#commodityDesc').typeahead('destroy');
 	// passing in `null` for the `options` arguments will result in the default
 	// options being used
     $('#commodityDesc').typeahead({
+		minLength: 0,
 		hint: true,
 		highlight: true
 	}, {
-		minLength: 2,
 		limit: 20,
 		name: 'commodities',
-		displayKey: 'descCode',
-		source: commodityBloodHound.ttAdapter()
+		display: 'descCode',
+//		source: commodityBloodHound.ttAdapter()
+		source: commoditiesWithDefaults
 	}).on('typeahead:selected', function (obj, datum) {
 		$('#commodityDesc').typeahead('val', datum.desc);
         $('#commodityCode').val(datum.code);

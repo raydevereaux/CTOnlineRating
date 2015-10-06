@@ -164,7 +164,7 @@ function addListeners(){
 	$('#addressPickModal').on('hidden.bs.modal', function(){
 		$(spellCheckFocusElement).focus();
 	});
-	$('body').on('show.bs.modal', '#rateRequestXmlModal', function(){
+	$('body').on('show.bs.modal', '#rateRequestXmlModal,#rateResponseXmlModal', function(){
 		prettyPrint();
 	});
 }

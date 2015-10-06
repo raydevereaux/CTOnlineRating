@@ -19,8 +19,8 @@
 				    parseMethod="com.boiseinc.cc.util.DateConverter.parseDate" 
 				    printMethod="com.boiseinc.cc.util.DateConverter.printDate" />
 				<jaxb:javaType name="java.util.Date" xmlType="xsd:dateTime" 
-				    parseMethod="com.boiseinc.cc.util.DateTimeConverter.parseDate" 
-				    printMethod="com.boiseinc.cc.util.DateTimeConverter.printDate" />
+				    parseMethod="com.boiseinc.cc.util.DateConverter.parseDate" 
+				    printMethod="com.boiseinc.cc.util.DateConverter.printDateTime" />
 			</jaxb:globalBindings>
 			<jaxb:schemaBindings>
 				<jaxb:package name="com.boiseinc.cc.webservice.rating" />
@@ -91,6 +91,7 @@
             </xsd:sequence>
             <xsd:attribute name="userId" type="xsd:string" use="required" />
             <xsd:attribute name="clientGroup" type="tns:clientGroup" use="required" />
+            <xsd:attribute name="loc" type="xsd:string" use="optional" />
             <xsd:attribute name="sidBol" type="xsd:string" />
             <xsd:attribute name="scac" type="xsd:string" />
             <xsd:attribute name="destCarrier" type="xsd:string" />
@@ -99,8 +100,8 @@
             <xsd:attribute name="shipMode" type="tns:shipMode" use="required" />
             <xsd:attribute name="currency" type="xsd:string" default="USD"/>
             <xsd:attribute name="roundTrip" type="xsd:boolean" use="optional"  default="false"/>
-            <attribute default="OP" name="freightTerms" type="xsd:string" use="optional"/>
-            <attribute default="PPD" name="prepaidCollect" type="xsd:string" use="optional"/>
+            <xsd:attribute name="freightTerms" type="xsd:string" default="OP" use="optional" />
+            <xsd:attribute name="prepaidCollect" type="xsd:string" default="PPD" use="optional" />
           </xsd:complexType>
 	</xsd:element>
 	<xsd:element name="RateResponse">
@@ -152,6 +153,16 @@
            </xsd:complexType>
          </xsd:element>
          <xsd:element name="rateRemarkList" minOccurs="0" maxOccurs="unbounded" type="xsd:string"/>
+         <xsd:element name="leg" minOccurs="1" maxOccurs="unbounded">
+           <xsd:complexType>
+             <xsd:attribute name="num" type="xsd:int"/>
+             <xsd:attribute name="route" type="xsd:string"/>
+             <xsd:attribute name="amt" type="xsd:float"/>
+             <xsd:attribute name="miles" type="xsd:int"/>
+             <xsd:attribute name="scac" type="xsd:string"/>
+             <xsd:attribute name="equipmentType" type="xsd:string"/>
+           </xsd:complexType>
+       	 </xsd:element>
        </xsd:sequence>
        <xsd:attribute name="tracToken" type="xsd:string"/>
        <xsd:attribute name="scac" type="xsd:string"/>
@@ -178,6 +189,7 @@
 		<xsd:restriction base="xsd:string">
             <xsd:enumeration value="ALL" />
             <xsd:enumeration value="TRUCK" />
+            <xsd:enumeration value="CADTRK" />
             <xsd:enumeration value="RAIL" />
             <xsd:enumeration value="LTL" />
             <xsd:enumeration value="PALL" />

@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import com.bc.ct.ws.model.RateQuote;
 import com.bc.ct.ws.model.RateQuote.Charges.Charge;
+import com.bc.ct.ws.model.RateQuote.Leg;
 import com.bc.ct.ws.model.RateQuote.TariffAuth;
 import com.bc.ct.ws.model.RateRequest;
 import com.bc.ct.ws.model.RateResponse;
@@ -69,7 +70,7 @@ public class RateQuoteExcel{
 	            0, //first row (0-based)
 	            0, //last row  (0-based)
 	            0, //first column (0-based)
-	            9  //last column  (0-based)
+	            10  //last column  (0-based)
 	    ));
 		Row headerRow1Params = sheet.createRow(1);
 		Cell cell1 = headerRow1Params.createCell(0);
@@ -79,23 +80,25 @@ public class RateQuoteExcel{
 	            1, //first row (0-based)
 	            1, //last row  (0-based)
 	            0, //first column (0-based)
-	            9  //last column  (0-based)
+	            10  //last column  (0-based)
 	    ));
 		
 		Row headerRow = sheet.createRow(2);
 		Cell dlrHdrCell = headerRow.createCell(0);
 		dlrHdrCell.setCellValue("Rate Number");
-		Cell salesCell = headerRow.createCell(1);
+		Cell legHdrCell = headerRow.createCell(1);
+		legHdrCell.setCellValue("Leg Number");
+		Cell salesCell = headerRow.createCell(2);
 		salesCell.setCellValue("Equipment Type");
-		Cell prevSalesCell = headerRow.createCell(2);
+		Cell prevSalesCell = headerRow.createCell(3);
 		prevSalesCell.setCellValue("Route");
-		Cell pctSalesCell = headerRow.createCell(3);
+		Cell pctSalesCell = headerRow.createCell(4);
 		pctSalesCell.setCellValue("Total Freight");
-		Cell ftgCell = headerRow.createCell(4);
+		Cell ftgCell = headerRow.createCell(5);
 		ftgCell.setCellValue("Total Miles");
-		Cell prevFtgCell = headerRow.createCell(5);
+		Cell prevFtgCell = headerRow.createCell(6);
 		prevFtgCell.setCellValue("SCAC");
-		Cell pctFtgCell = headerRow.createCell(6);
+		Cell pctFtgCell = headerRow.createCell(7);
 		pctFtgCell.setCellValue("Currency");
 		
 		for(int i = 0; i < headerRow.getLastCellNum(); i++){//For each cell in the row 
@@ -109,31 +112,37 @@ public class RateQuoteExcel{
 		int rowNum = 3;
 		for (int i=0; i<response.getQuotes().size(); i++) {
 			RateQuote quote = response.getQuotes().get(i);
-			Row row = sheet.createRow(rowNum++);
-			Cell cell1 = row.createCell(0);
-			cell1.setCellValue(i+1);
-			Cell cell2 = row.createCell(1);
-			cell2.setCellValue(quote.getEquipment().getType());
-			Cell cell3 = row.createCell(2);
-			cell3.setCellValue(quote.getRoute());
-			Cell cell4 = row.createCell(3);
-			cell4.setCellValue(quote.getTotalAmt());
-			cell4.setCellStyle(getDollarFormatStyle());
-			Cell cell5 = row.createCell(4);
-			cell5.setCellValue(quote.getMiles());
-			cell5.setCellStyle(getNumberFormatStyle());
-			Cell cell6 = row.createCell(5);
-			cell6.setCellValue(quote.getScac());
-			Cell cell7 = row.createCell(6);
-			cell7.setCellValue(quote.getCurrency());
+			for (Leg leg : quote.getLeg()) {
+				Row row = sheet.createRow(rowNum++);
+				Cell cell1 = row.createCell(0);
+				cell1.setCellValue(i+1);
+				Cell cell2 = row.createCell(1);
+				cell2.setCellValue(leg.getNum());
+				Cell cell3 = row.createCell(2);
+				cell3.setCellValue(leg.getEquipmentType());
+				Cell cell4 = row.createCell(3);
+				cell4.setCellValue(StringUtils.isEmpty(leg.getRoute()) ? quote.getRoute() : leg.getRoute());
+				Cell cell5 = row.createCell(4);
+				cell5.setCellValue(leg.getAmt());
+				cell5.setCellStyle(getDollarFormatStyle());
+				Cell cell6 = row.createCell(5);
+				cell6.setCellValue(leg.getMiles());
+				cell6.setCellStyle(getNumberFormatStyle());
+				Cell cell7 = row.createCell(6);
+				cell7.setCellValue(leg.getScac());
+				Cell cell8 = row.createCell(7);
+				cell8.setCellValue(quote.getCurrency());
+			}
 		}
 		
 		fillRateDetailSheets(response.getQuotes());
 		
-		//Auto size all the columns
-	    for (int x = 0; x < sheet.getRow(2).getPhysicalNumberOfCells(); x++) {
-	    	sheet.autoSizeColumn(x);
-	    }
+		for (int row = 0 ; row < sheet.getPhysicalNumberOfRows(); row ++) {
+			//Auto size all the columns
+		    for (int x = 0; x < sheet.getRow(row).getPhysicalNumberOfCells(); x++) {
+		    	sheet.autoSizeColumn(x);
+		    }	
+		}
 	}
 	
 	private void fillRateDetailSheets(List<RateQuote> quotes) {

@@ -8,35 +8,65 @@
 		<h4 th:if="${rateResponse.failure != null and !#strings.isEmpty(rateResponse.failure.message)}">
 			Failure message: <span th:text="${rateResponse.failure.message}"></span>
 		</h4> 
-		<table id="quoteTable" class="table table-striped table-hover table-responsive" th:unless="${rateResponse.quotes == null || #lists.isEmpty(rateResponse.quotes)}">
+		<table id="quoteTable" class="table table-responsive" th:unless="${rateResponse.quotes == null || #lists.isEmpty(rateResponse.quotes)}">
 			<caption>Click row for rate details<span class="pull-right" style="margin-right:20px;"><i id="excelIcon" class="fa fa-file-excel-o fa-2x text-success" style="cursor:pointer;"></i></span></caption>
 			<thead>
 				<tr>
 					<th>Rate Number</th>
+					<th>Leg Number</th>
 					<th>Equipment Type</th>
 					<th>Route</th>
-					<th>Total Freight</th>
-					<th>Total Miles</th>
-					<th>SCAC</th>
+					<th class="text-right">Total Freight</th>
+					<th class="text-right">Total Miles</th>
+					<th class="text-center">SCAC</th>
 					<th>Currency</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="quote,stat : *{quotes}">
-					<tr th:id="'quoteRow' + ${stat.index}" style="cursor:pointer;">
+					<!-- Each Leg -->
+					<th:block th:if="${#lists.size(quote.leg) > 1}" th:each="leg : ${quote.leg}">
+						<tr th:id="'quoteRow' + ${stat.index}" style="cursor:pointer;" th:class="${stat.index} % 2 != 0 ? 'striped'">
+							<td th:text="${stat.index+1}"></td>
+							<td th:text="${leg.num+1}"></td>
+							<td th:text="${leg.equipmentType}"></td>
+							<td th:text="${leg.route}"></td>
+							<td th:text="${'$' + #numbers.formatDecimal(leg.amt, 0, 'COMMA', 2, 'POINT')}" class="text-right"></td>
+							<td th:text="${#numbers.formatInteger(leg.miles, 0, 'COMMA')}" class="text-right"></td>
+							<td th:text="${leg.scac}" class="text-center"></td>
+							<td th:text="${quote.currency}"></td>
+						</tr>
+					</th:block>
+					<!-- Total Row -->
+					<tr th:id="'quoteRow' + ${stat.index}" style="cursor:pointer;" th:if="${#lists.size(quote.leg) > 1}" th:class="${stat.index} % 2 != 0 ? 'striped'">
 						<td th:text="${stat.index+1}"></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td th:text="${'$' + #numbers.formatDecimal(quote.totalAmt, 0, 'COMMA', 2, 'POINT')}" class="text-right"></td>
+						<td th:text="${#numbers.formatInteger(quote.miles, 0, 'COMMA')}" class="text-right"></td>
+						<td class="text-center"></td>
+						<td th:text="${quote.currency}"></td>
+					</tr>
+					<!-- One Leg Row -->
+					<tr th:id="'quoteRow' + ${stat.index}" style="cursor:pointer;" th:unless="${#lists.size(quote.leg) > 1}" th:class="${stat.index} % 2 != 0 ? 'striped'">
+						<td th:text="${stat.index+1}"></td>
+						<td>---</td>
 						<td th:text="${quote.Equipment.type}"></td>
 						<td th:text="${quote.route}"></td>
-						<td th:text="${'$' + #numbers.formatDecimal(quote.totalAmt, 0, 'COMMA', 2, 'POINT')}"></td>
-						<td th:text="${#numbers.formatInteger(quote.miles, 0, 'COMMA')}"></td>
-						<td th:text="${quote.scac}"></td>
+						<td th:text="${'$' + #numbers.formatDecimal(quote.totalAmt, 0, 'COMMA', 2, 'POINT')}" class="text-right"></td>
+						<td th:text="${#numbers.formatInteger(quote.miles, 0, 'COMMA')}" class="text-right"></td>
+						<td th:text="${quote.scac}" class="text-center"></td>
 						<td th:text="${quote.currency}"></td>
 					</tr>
 				</th:block>
 			</tbody>
 		</table>
 		
-		<button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#rateRequestXmlModal">View Rate Request Xml</button>
+		<div class="row" style="margin-top:5em;">
+			<button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#rateResponseXmlModal">View Rate Response Xml</button>
+			<button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#rateRequestXmlModal" style="margin-right:10px;">View Rate Request Xml</button>
+		</div>
 		
 		<!-- Xml Modal -->
 		<div class="modal fade" th:id="rateRequestXmlModal" tabindex="-1" role="dialog" aria-labelledby="rateRequestXmlModal">
@@ -50,6 +80,29 @@
 					</div>
 					<div class="modal-body">
 						<pre class="prettyprint" style="overflow:auto; word-wrap: normal; white-space:pre;" th:text="${rateResponse.rateRequestXml}"></pre>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+		
+		<!-- Xml Modal -->
+		<div class="modal fade" th:id="rateResponseXmlModal" tabindex="-1" role="dialog" aria-labelledby="rateRequestXmlModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 class="modal-title">Rate Response Xml</h3>
+					</div>
+					<div class="modal-body">
+						<pre class="prettyprint" style="overflow:auto; word-wrap: normal; white-space:pre;" th:text="${rateResponse.rateResponseXml}"></pre>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

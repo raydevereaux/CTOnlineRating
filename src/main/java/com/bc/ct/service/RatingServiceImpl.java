@@ -15,6 +15,7 @@ import com.bc.ct.ws.RateClient;
 import com.bc.ct.ws.model.ClientGroup;
 import com.bc.ct.ws.model.RateQuote;
 import com.bc.ct.ws.model.RateQuote.Charges.Charge;
+import com.bc.ct.ws.model.RateQuote.Leg;
 import com.bc.ct.ws.model.RateRequest;
 import com.bc.ct.ws.model.RateRequest.Stops;
 import com.bc.ct.ws.model.RateResponse;
@@ -48,21 +49,38 @@ public class RatingServiceImpl implements RatingService {
 		rateRequest.getCommoditys().get(0).getCommodity().setDesc(null);
 		RateResponse response = rateClient.getRate(rateRequest);
 		rateRequest.getCommoditys().get(0).getCommodity().setDesc(commodityDesc);
-		
-		//Set the rateRequest raw Xml string
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			marshaller.getJaxbContext().createMarshaller().marshal(rateRequest, baos);
-			response.setRateRequestXml(XmlStringTransformer.prettifyXmlString(new String(baos.toByteArray())));
-			baos.flush();
-			baos.close();
-		} catch (Exception e) {
-			logger.error("Unable to marshal rate request xml", e);
+
+		//This should probably be done on Ray's web service but doing it here for now since I don't want to
+		//change paper's mileage
+		for (RateQuote quote : response.getQuotes()) {
+			int miles = 0;
+			for (Leg leg : quote.getLeg()) {
+				miles+=leg.getMiles();
+			}
+			quote.setMiles(miles);
 		}
+		
+		//Set the rateRequest and rateResponse raw Xml string
+		response.setRateRequestXml(marshalObjectToXml(rateRequest));
+		response.setRateResponseXml(marshalObjectToXml(response));
 		
 		sortQuotes(response);
 		
 		return response;
+	}
+	
+	private String marshalObjectToXml(Object objectToMarshal) {
+		String result = "";
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			marshaller.getJaxbContext().createMarshaller().marshal(objectToMarshal, baos);
+			result = XmlStringTransformer.prettifyXmlString(new String(baos.toByteArray()));
+			baos.flush();
+			baos.close();
+		} catch (Exception e) {
+			logger.error("Unable to marshal object to xml", e);
+		}
+		return result;
 	}
 	
 	private void sortQuotes(RateResponse response) {

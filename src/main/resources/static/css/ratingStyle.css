@@ -6,6 +6,10 @@
 	background-color: #E8F0F9;
 }
 
+tr.striped {
+	background-color: #E8F0F9;
+}
+
 #originState, #destState, #commodityWeight, #commodityClass, #commodityCode, #originCode, #destCode{
 	width: 7em;	
 }

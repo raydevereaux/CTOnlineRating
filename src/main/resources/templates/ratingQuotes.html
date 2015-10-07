@@ -138,15 +138,17 @@
 							</thead>
 							<tbody>
 								<th:block th:each="quote,stat : *{quotes}">
-									<tr th:each="charge,stat2 : ${quote.charges.charge}" >
-										<td class="hide" th:text="${stat.index+1}"></td>
-										<td th:text="${charge.stopNum}"></td>
-										<td th:text="${charge.code}"></td>
-										<td th:text="${charge.desc}"></td>
-										<td th:text="${charge.rate}"></td>
-										<td th:text="${#numbers.formatInteger(charge.units, 0, 'COMMA')}"></td>
-										<td th:text="${'$' + #numbers.formatDecimal(charge.amt, 0, 'COMMA', 2, 'POINT')}"></td>
-									</tr>  
+									<th:block th:each="leg,stat2 : ${quote.leg}">
+										<tr th:each="charge,stat3 : ${leg.charge}" >
+											<td class="hide" th:text="${(stat.index+1) + ',' + (stat2.index+1)}"></td>
+											<td th:text="${charge.stopNum}"></td>
+											<td th:text="${charge.code}"></td>
+											<td th:text="${charge.desc}"></td>
+											<td th:text="${charge.rate}"></td>
+											<td th:text="${charge.units != null ? #numbers.formatInteger(charge.units, 0, 'COMMA') : ''}"></td>
+											<td th:text="${charge.amt != null ? '$' + #numbers.formatDecimal(charge.amt, 0, 'COMMA', 2, 'POINT') : ''}"></td>
+										</tr>
+									</th:block>  
 								</th:block>
 							</tbody>
 						</table>
@@ -161,12 +163,14 @@
 							</thead>
 							<tbody>
 								<th:block th:each="quote,stat : *{quotes}">
-									<tr th:each="tariffAuth,stat2 : ${quote.tariffAuth}" >
-										<td class="hide" th:text="${stat.index+1}"></td>
-										<td th:text="${tariffAuth.type}"></td>
-										<td th:text="${#dates.format(tariffAuth.effDate, 'MM/dd/yyyy')}"></td>
-										<td th:text="${#dates.format(tariffAuth.expDate, 'MM/dd/yyyy')}"></td>
-									</tr>
+									<th:block th:each="leg,stat2 : ${quote.leg}">
+										<tr th:each="tariffAuth,stat3 : ${leg.tariffAuth}" >
+											<td class="hide" th:text="${(stat.index+1) + ',' + (stat2.index+1)}"></td>
+											<td th:text="${tariffAuth.type}"></td>
+											<td th:text="${#dates.format(tariffAuth.effDate, 'MM/dd/yyyy')}"></td>
+											<td th:text="${#dates.format(tariffAuth.expDate, 'MM/dd/yyyy')}"></td>
+										</tr>
+									</th:block>
 								</th:block>
 							</tbody>
 						</table>

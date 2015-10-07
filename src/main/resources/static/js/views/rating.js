@@ -38,9 +38,12 @@ function setUpExampleRates(){
 	$('#exampleRate1').click(setUpRates);
 	$('#exampleRate2').click(function(){
 		setUpRates();
-		$('#destCity').val('AMERICAN CANYON');
-		$('#destState').val('CA');
-		$('#destCounty').val('NAPA');
+		$('#destCity').val('DENVER');
+		$('#destState').val('CO');
+		$('#destCounty').val('');
+		setTimeout(function(){
+			$('#carrierList').selectpicker('val', 'ALL');
+		}, 500);
 	});
 	$('#exampleRate3').click(function(){
 		$('#clientGroup').selectpicker('val', 'BOISEP');
@@ -578,7 +581,9 @@ function downloadExcelFile(){
 }
 
 function quoteClicked(tableRowElement){
-	quoteIndex = $(tableRowElement).find('td:first').text();
+	leg = '---' == $(tableRowElement).find('td:nth(1)').text() ? '1' : $(tableRowElement).find('td:nth(1)').text();
+	quoteIndex = $(tableRowElement).find('td:first').text() + ',' + leg;
+	console.log(quoteIndex);
 	$.each($('#quoteModalTable > tbody > tr, #quoteModalTariffTable > tbody > tr'), function(index, value){
 		if (quoteIndex == $(this).find('td:first').text()){
 			$(this).show();

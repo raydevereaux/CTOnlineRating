@@ -83,6 +83,9 @@ function setDefaults(){
     $('#ratingForm').ajaxForm({
     	beforeSubmit: validateForm,
     	success: rateSuccess,
+    	error: function(jqXHR, textStatus, errorThrown){
+    		alert(textStatus + ' - ' + errorThrown);
+    	},
     	complete: function(jqXHR, textStatus){
 //    		alert(jqXHR.responseText  + ' ' + textStatus + ' X_CSRF_TOKEN: ' + jqXHR.getResponseHeader('X-CSRF-TOKEN'));
     		$('#spinner').addClass('hide');

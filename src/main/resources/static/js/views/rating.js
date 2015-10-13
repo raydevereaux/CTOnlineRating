@@ -11,12 +11,12 @@ $(document).ready(function(){
 });
 
 function init(){
-	setDefaults();
+	$('.selectpicker').selectpicker();
 	addListeners();
+	setDefaults();
 	clientChanged();
 	setUpExampleRates();
 	$('#originSearch').focus();
-	$('.selectpicker').selectpicker();
 }
 
 function setUpExampleRates(){
@@ -97,6 +97,21 @@ function setDefaults(){
     });
     
     $('[data-toggle="tooltip"]').tooltip();
+    
+    readClientGroupCookie();
+}
+
+function readClientGroupCookie(){
+	var cookieValue = $.cookie("clientGroup");
+	//Read cookie value, set client group, and remake cookie
+	if (cookieValue){
+		$('#clientGroup').selectpicker('val', cookieValue);
+		setClientGroupCookie(cookieValue);
+	}
+}
+
+function setClientGroupCookie(clientGroup){
+	$.cookie("clientGroup", clientGroup, {expires : 30});
 }
 
 function refreshOriginDest(){
@@ -394,6 +409,7 @@ function keyPressEvent(callback, nextElement){
 function clientChanged(){
 	clearValidationErrors();
 	client = $('#clientGroup').val();
+	setClientGroupCookie(client);
 	$('#commodityClass').parent('.form-group').toggleClass('hide', 'BOISEW' == client);
 	refreshCarrierList(client);
 	populateTypeAheads();

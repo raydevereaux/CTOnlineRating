@@ -427,7 +427,15 @@ function refreshCarrierList(client){
 			$('#carrierList').append($("<option></option>").attr("value", carrArr[1]).text(value));
 		});
 		$('#carrierList').selectpicker('refresh');
+		//Default carrier if applicable
+		if ('BOISEB' === client){
+			$('#carrierList').selectpicker('val', 'RAIL');
+		}
 	});
+	//Default carrier if applicable
+	if ('BOISEB' === client){
+		$('#carrierList').selectpicker('val', 'RAIL');
+	}
 }
 
 function populateTypeAheads(){

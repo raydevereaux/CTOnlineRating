@@ -37,13 +37,13 @@ public class RatingServiceImpl implements RatingService {
 	@Override
 	public RateResponse rate(RateRequest rateRequest) {
 		//Clear zip for BOISEW
-		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
-			rateRequest.getOrigin().setZip(null);
-			rateRequest.getDest().setZip(null);
-			for (Stops stops : rateRequest.getStops()) {
-				stops.getStop().setZip(null);
-			}
-		}
+//		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
+//			rateRequest.getOrigin().setZip(null);
+//			rateRequest.getDest().setZip(null);
+//			for (Stops stops : rateRequest.getStops()) {
+//				stops.getStop().setZip(null);
+//			}
+//		}
 		//Remove commodity desc before send and re-set it afterwards
 		String commodityDesc = rateRequest.getCommoditys().get(0).getCommodity().getDesc();
 		rateRequest.getCommoditys().get(0).getCommodity().setDesc(null);

@@ -517,8 +517,8 @@ function populateCommodityTypeAhead(){
 	function commoditiesWithDefaults(q, sync){
 		if (q === '' && $('#commodityDesc').val() === ''){
 			if ('BOISEW' === $('#clientGroup').val()){
-				//Beams, Lumber, Particleboard, Plywood
-				sync(commodityBloodHound.get('2439100', '2421184', '2499610','2432158'));	
+				//LVL, Lumber, Particleboard, Plywood
+				sync(commodityBloodHound.get('2439120', '2421184', '2499610','2432158'));	
 			}
 		}else{
 			commodityBloodHound.search(q, sync);

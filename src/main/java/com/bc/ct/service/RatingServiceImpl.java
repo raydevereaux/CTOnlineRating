@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.bc.ct.util.XmlStringTransformer;
 import com.bc.ct.ws.RateClient;
-import com.bc.ct.ws.model.ClientGroup;
 import com.bc.ct.ws.model.RateQuote;
 import com.bc.ct.ws.model.RateQuote.Charges.Charge;
 import com.bc.ct.ws.model.RateQuote.Leg;
 import com.bc.ct.ws.model.RateRequest;
-import com.bc.ct.ws.model.RateRequest.Stops;
 import com.bc.ct.ws.model.RateResponse;
 import com.google.common.collect.ComparisonChain;
 

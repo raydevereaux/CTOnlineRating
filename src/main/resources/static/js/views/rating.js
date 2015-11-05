@@ -571,6 +571,9 @@ function populateCommodityTypeAhead(){
 			if ('BOISEW' === $('#clientGroup').val()){
 				//LVL, Lumber, Particleboard, Plywood
 				sync(commodityBloodHound.get('2439120', '2421184', '2499610','2432158'));	
+			}else if ('BOISEB' === $('#clientGroup').val()){
+				//LVL, Lumber, Plywood, Thermoply, PB
+				sync(commodityBloodHound.get('2439120', '2421184', '2432158','2661935', '2499610'));
 			}
 		}else{
 			commodityBloodHound.search(q, sync);

@@ -2,13 +2,18 @@ package com.bc.ct;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 @SpringBootApplication
-@EnableCaching
-public class CtOnlineRatingApplication {
+public class CtOnlineRatingApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(CtOnlineRatingApplication.class, args);
     }
+    
+    @Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(CtOnlineRatingApplication.class);
+	}
 }

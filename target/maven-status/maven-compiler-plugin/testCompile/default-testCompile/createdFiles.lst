@@ -1,1 +1,6 @@
+com\bc\ct\repository\GeographyRepositoryImplTest.class
+com\bc\ct\ws\WebServiceTest.class
+com\bc\ct\service\GeographyServiceImplTest.class
+com\bc\ct\repository\CommodityRepositoryImplTest.class
 com\bc\ct\CtOnlineRatingApplicationTests.class
+com\bc\ct\repository\CarrierRepositoryImplTest.class

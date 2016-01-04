@@ -473,9 +473,9 @@ function refreshCarrierList(client){
 		$('#carrierList').append($("<option></option>").attr("value", '').text('None'));
 		$.each(data, function(key, value){
 			carrArr = value.split('.');
-			if (carrArr[1] == 'CADTRK'){
-				carrArr[1] = 'TRUCK';
-			}
+//			if (carrArr[1] == 'CADTRK'){
+//				carrArr[1] = 'TRUCK';
+//			}
 			$('#carrierList').append($("<option></option>").attr("value", carrArr[1]).text(value));
 		});
 		$('#carrierList').selectpicker('refresh');

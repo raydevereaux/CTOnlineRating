@@ -560,11 +560,21 @@ function populateCommodityTypeAhead(){
 			// suggestion engine expects JavaScript objects so this converts all of
 			// those strings
 			filter: function(list) {
-				return $.map(list, function(commodity) { return { code: commodity.code, desc: commodity.desc, descCode: commodity.desc + ' ' + commodity.code, commClass: commodity.commClass}; });
+				return $.map(list, function(commodity) { return { code: commodity.code, desc: commodity.desc, 
+					descCode: commodityDesc(commodity.desc, commodity.code), commClass: commodity.commClass}; });
 			}
 		},
 		identify: function(comm){return comm.code;}
 	});
+	
+	function commodityDesc(desc, code){
+		var matches = desc.match(/\b(\w)/g);
+		var acronym = matches.join('');
+		if (acronym.length > 1)
+			return desc + ' ' + acronym + ' ' + code;	
+		else
+			return desc + ' ' + code;
+	}
 	
 	function commoditiesWithDefaults(q, sync){
 		if (q === '' && $('#commodityDesc').val() === ''){
@@ -573,13 +583,15 @@ function populateCommodityTypeAhead(){
 				sync(commodityBloodHound.get('2439120', '2421184', '2499610','2432158'));	
 			}else if ('BOISEB' === $('#clientGroup').val()){
 				//LVL, Lumber, Plywood, Thermoply, PB
-				sync(commodityBloodHound.get('2439120', '2421184', '2432158','2661935', '2499610'));
+				sync(commodityBloodHound.get('2439120', '2421184', '2499110', '2499610', '2432158','2661935'));
 			}
 		}else{
 			commodityBloodHound.search(q, sync);
 		}
 	}
-//	commodityBloodHound.initialize();
+	
+	commodityBloodHound.clearPrefetchCache();
+	commodityBloodHound.initialize(true);
     $('#commodityDesc').typeahead('destroy');
 	// passing in `null` for the `options` arguments will result in the default
 	// options being used

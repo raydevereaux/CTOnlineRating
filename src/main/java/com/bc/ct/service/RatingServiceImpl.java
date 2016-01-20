@@ -34,14 +34,6 @@ public class RatingServiceImpl implements RatingService {
 	 */
 	@Override
 	public RateResponse rate(RateRequest rateRequest) {
-		//Clear zip for BOISEW
-//		if (rateRequest != null && rateRequest.getClientGroup() != null && ClientGroup.BOISEW.equals(rateRequest.getClientGroup())) {
-//			rateRequest.getOrigin().setZip(null);
-//			rateRequest.getDest().setZip(null);
-//			for (Stops stops : rateRequest.getStops()) {
-//				stops.getStop().setZip(null);
-//			}
-//		}
 		//Remove commodity desc before send and re-set it afterwards
 		String commodityDesc = rateRequest.getCommoditys().get(0).getCommodity().getDesc();
 		rateRequest.getCommoditys().get(0).getCommodity().setDesc(null);
@@ -63,6 +55,7 @@ public class RatingServiceImpl implements RatingService {
 		response.setRateResponseXml(marshalObjectToXml(response));
 		
 		sortQuotes(response);
+		modifyCurrency(rateRequest, response);
 		
 		return response;
 	}
@@ -97,6 +90,16 @@ public class RatingServiceImpl implements RatingService {
 					return ComparisonChain.start().compare(o2.getAmt(), o1.getAmt()).result();
 				};
 			});
+		}
+	}
+	
+	private void modifyCurrency(RateRequest request, RateResponse response) {
+		boolean intraCanadian = "CAN".equalsIgnoreCase(request.getOrigin().getNation()) &&
+				"CAN".equalsIgnoreCase(request.getDest().getNation());
+		if (intraCanadian) {
+			for (RateQuote quote : response.getQuotes()){
+				quote.setCurrency("CAD");
+			}	
 		}
 	}
 }

@@ -20,14 +20,14 @@ import com.google.common.collect.Lists;
 public class CarrierRepositoryImpl implements CarrierRepository {
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate uniJdbcTemplate;
 	
 	@Cacheable("carrier")
 	@Override
 	public List<String> getCarrierList(Optional<String> client) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select @ID as keyId from CARRIER.LIST");
-		List<String> carrierList = jdbcTemplate.query(sql.toString(), new RowMapper<String>() {
+		List<String> carrierList = uniJdbcTemplate.query(sql.toString(), new RowMapper<String>() {
 			@Override
 			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return StringUtils.trimWhitespace(rs.getString(1));

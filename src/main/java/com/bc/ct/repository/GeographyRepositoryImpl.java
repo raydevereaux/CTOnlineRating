@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
 public class GeographyRepositoryImpl implements GeographyRepository{
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate uniJdbcTemplate;
 	
 	@Cacheable("geography")
 	@Override
@@ -39,7 +39,7 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 		}
 		sql.append("where CODE = ?");
 		
-		return jdbcTemplate.queryForObject(sql.toString(), new Object[] {code.toUpperCase()}, new LocationRowMapper());
+		return uniJdbcTemplate.queryForObject(sql.toString(), new Object[] {code.toUpperCase()}, new LocationRowMapper());
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 		}else {
 			sql.append("from LOCATION.CODES ");	
 		}
-		return jdbcTemplate.query(sql.toString(), new LocationRowMapper());
+		return uniJdbcTemplate.query(sql.toString(), new LocationRowMapper());
 	}
 	
 	@Override
@@ -81,6 +81,6 @@ public class GeographyRepositoryImpl implements GeographyRepository{
 			objs = new Object[] {city, state};
 		}
 		
-		return jdbcTemplate.query(sql.toString(), objs, new SpellCheckLocationRowMapper());
+		return uniJdbcTemplate.query(sql.toString(), objs, new SpellCheckLocationRowMapper());
 	}
 }

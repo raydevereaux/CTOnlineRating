@@ -14,8 +14,20 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-@Profile({"test", "test-liberty", "prod"})
-public class DatabaseConfig {
+@Profile("local")
+public class DatabaseConfigLocal {
+		
+	@Bean
+	public JdbcTemplate momJdbcTemplate() {
+		return new JdbcTemplate(momDataSource());
+	}
+	
+	@Bean
+	@Primary
+	@ConfigurationProperties(prefix="spring.ds_mom")
+	public DataSource momDataSource() {
+		return DataSourceBuilder.create().build();
+	}
 
 	@Bean
 	public JdbcTemplate uniJdbcTemplate() throws SQLException {
@@ -27,17 +39,5 @@ public class DatabaseConfig {
 	public DataSource uniDBDatasource() throws SQLException {
 		BasicDataSource ds = new BasicDataSource();
 		return ds;
-	}
-	
-	@Bean
-	public JdbcTemplate momJdbcTemplate() {
-		return new JdbcTemplate(momDataSource());
-	}
-	
-	@Bean
-	@Primary
-	@ConfigurationProperties(prefix="spring.ds_mom")
-	public DataSource momDataSource() {
-		return DataSourceBuilder.create().build();
 	}
 }

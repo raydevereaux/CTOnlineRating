@@ -25,3 +25,6 @@ tr.striped {
 #commodityDesc{
 	width: 16em;
 }
+
+:focus {outline:none !important;}
+::-moz-focus-inner {border:0 !important;}

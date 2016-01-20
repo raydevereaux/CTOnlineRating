@@ -22,6 +22,7 @@ com\bc\ct\ws\model\RateRequest$Commoditys.class
 com\bc\ct\ws\model\ShipMode.class
 com\bc\ct\ws\model\RateRequest$Stops.class
 com\bc\ct\repository\CarrierRepositoryImpl$1.class
+com\bc\ct\config\WebFilterConfig.class
 com\bc\ct\ws\model\RateQuote$Leg$Charge.class
 com\bc\ct\service\CarrierService.class
 com\bc\ct\controllers\CommodityController.class
@@ -57,6 +58,7 @@ com\bc\ct\service\GeographyServiceImpl.class
 com\bc\ct\repository\CarrierRepositoryImpl.class
 com\bc\ct\service\GeographyServiceImpl$1.class
 com\bc\ct\ws\model\ObjectFactory.class
+com\bc\ct\config\WebFilterConfig$1.class
 com\bc\ct\service\RatingServiceImpl$1.class
 com\bc\ct\ws\model\RateQuote.class
 com\bc\ct\util\DateConverter.class

@@ -17,13 +17,13 @@ import com.bc.ct.beans.Commodity;
 public class CommodityRepositoryImpl implements CommodityRepository {
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate uniJdbcTemplate;
 	
 	@Override
 	@Cacheable("commodity")
 	public List<Integer> getAllCommodityCodes() {
 		String sql = "SELECT COMMODITY.CODE FROM NMFC ORDER BY COMMODITY.CODE";
-		return jdbcTemplate.query(sql, new RowMapper<Integer>() {
+		return uniJdbcTemplate.query(sql, new RowMapper<Integer>() {
 			@Override
 			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return rs.getInt(1);
@@ -40,7 +40,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 		sql.append("ORDER BY DESCRIPTION");
 		//+" where CODE in ('"+code.toUpperCase()+"')"
 		
-		return jdbcTemplate.query(sql.toString(), new RowMapper<Commodity>() {
+		return uniJdbcTemplate.query(sql.toString(), new RowMapper<Commodity>() {
 			@Override
 			public Commodity mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Commodity comm = new Commodity();
@@ -69,7 +69,7 @@ public class CommodityRepositoryImpl implements CommodityRepository {
 		}
 		sql.append( "order by b.COMMODITY.DESCRIPTION");
 		
-		return jdbcTemplate.query(sql.toString(), new RowMapper<Commodity>() {
+		return uniJdbcTemplate.query(sql.toString(), new RowMapper<Commodity>() {
 			@Override
 			public Commodity mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Commodity comm = new Commodity();

@@ -45,20 +45,6 @@ function setUpExampleRates(){
 			$('#carrierList').selectpicker('val', 'ALL');
 		}, 500);
 	});
-	$('#exampleRate3').click(function(){
-		$('#clientGroup').selectpicker('val', 'BOISEP');
-		clientChanged();
-		$('#originCode').val('IF');
-		loadOriginFromCode();
-		$('#destCode').val('CH');
-		loadDestFromCode();
-		$('#commodityDesc').val('PRINTING PAPER');
-		$('#commodityCode').val('2621345');
-		$('#commodityWeight').val('150000');
-		setTimeout(function(){
-			$('#carrierList').selectpicker('val', 'RAIL');
-		}, 500);
-	});
 }
 
 function setDefaults(){
@@ -668,16 +654,53 @@ function rateSuccess(rateResponse, statusText, xhr, form){
 		quoteClicked($(this));
 	});
 	lastRateFormObj = $('#ratingForm').formSerialize();
-	$('body').remove('iframe');
+	setUpCurrency();
+}
+
+function setUpCurrency(){
+	$('#currencyGroup button').click(function(){
+		if ($(this).hasClass('disabled') || $(this).hasClass('active')){
+			return;
+		}
+		$('#currencyGroup button').removeClass('active').addClass('disabled');
+		$(this).addClass('active');
+		$('#currencyGroup i').css('visibility', 'visible');
+		changeCurrency($('#quoteTable tbody tr td:nth(7)').text(), $(this).text());
+	});
+}
+
+function changeCurrency(fromCurrency, toCurrency){
+	$.get(readCurrencyUrl, {fromCurrency: fromCurrency, toCurrency: toCurrency}, function(data){
+
+		$('#quoteTable tbody tr').each(function(){
+			var originalValue = $(this).find('td:nth(4)').text();
+			var newValue = numeral(originalValue).multiply(numeral(data)).format('$0,0.00');
+			$(this).find('td:nth(4)').text(newValue);
+			$(this).find('td:nth(7)').text(toCurrency.toUpperCase());
+		});
+		
+		$('#quoteModalTable tbody tr').each(function(){
+			var originalValue = $(this).find('td:nth(6)').text();
+			var newValue = numeral(originalValue).multiply(numeral(data)).format('$0,0.00');
+			$(this).find('td:nth(6)').text(newValue);
+		});
+		
+		title = '<p>This currency conversion is only for informational purposes.  Some rounding error may occur within a few cents.  The conversion rate is updated once a month in MOM.</p>'
+			+'<p>The conversion from ' + fromCurrency + ' to ' + toCurrency + ' is ' + data + ' for the given ship date.';
+		$('#currencyGroup i:last').attr('data-original-title', title).tooltip({html:true, container: 'body'});
+	})
+		.fail(function(jqXHR, textStatus, errorThrown){
+			 var err = eval("(" + jqXHR.responseText + ")");
+			alert(err.message);
+		})
+		.always(function(){
+			$('#currencyGroup button').removeClass('disabled');
+			$('#currencyGroup i:first').css('visibility', 'hidden');
+		});
 }
 
 function downloadExcelFile(){
 	window.location.href = rateExcelUrl + '?' + lastRateFormObj;
-//	$.post(rateExcelUrl, lastRateFormObj, function() {
-//	}).complete(function(jqXHR, textStatus){
-//		alert(jqXHR.url);
-//		$("body").append("<iframe src='" + jqXHR.url+ "' style='display: none;' ></iframe>");
-//	}); 
 }
 
 function quoteClicked(tableRowElement){

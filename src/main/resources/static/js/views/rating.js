@@ -665,12 +665,13 @@ function setUpCurrency(){
 		$('#currencyGroup button').removeClass('active').addClass('disabled');
 		$(this).addClass('active');
 		$('#currencyGroup i').css('visibility', 'visible');
-		changeCurrency($('#quoteTable tbody tr td:nth(7)').text(), $(this).text());
+		quoteShipDate = moment($('#quoteShipDate').text());
+		changeCurrency($('#quoteTable tbody tr td:nth(7)').text(), $(this).text(), quoteShipDate.month()+1, quoteShipDate.year());
 	});
 }
 
-function changeCurrency(fromCurrency, toCurrency){
-	$.get(readCurrencyUrl, {fromCurrency: fromCurrency, toCurrency: toCurrency}, function(data){
+function changeCurrency(fromCurrency, toCurrency, month, year){
+	$.get(readCurrencyUrl, {fromCurrency: fromCurrency, toCurrency: toCurrency, month: month, year: year}, function(data){
 
 		$('#quoteTable tbody tr').each(function(){
 			var originalValue = $(this).find('td:nth(4)').text();

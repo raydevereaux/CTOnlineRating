@@ -63,16 +63,7 @@
 			</tbody>
 		</table>
 		
-		<div class="row" style="margin-top:3em;" th:unless="${rateResponse.quotes == null || #lists.isEmpty(rateResponse.quotes)}">
-			<div class="btn-group pull-right" role="group" aria-label="Currency" id="currencyGroup">
-			  <div class="text-center" style="margin-bottom:.5em;margin-left:1em;"><strong>Currency</strong><i class="fa fa-cog fa-spin text-info" style="visibility: hidden;"></i><i class="fa fa-info-circle text-info" style="visibility: hidden;"></i></div>
-			  <button type="button" class="btn btn-default" th:classappend="*{quotes[0].currency == 'USD'} ? 'active' : ''">USD</button>
-			  <button type="button" class="btn btn-default" th:classappend="*{quotes[0].currency == 'CAD'} ? 'active' : ''">CAD</button>
-			  <!-- <button type="button" class="btn btn-default" th:classappend="*{quotes[0].currency == 'GBP'} ? 'active' : ''">GBP</button> -->
-			</div>
-		</div>
-		
-		<div class="row" style="margin-top:2em;">
+		<div class="row" style="margin-top:5em;">
 			<button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#rateResponseXmlModal">View Rate Response Xml</button>
 			<button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#rateRequestXmlModal" style="margin-right:10px;">View Rate Request Xml</button>
 		</div>

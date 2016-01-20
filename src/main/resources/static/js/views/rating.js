@@ -135,6 +135,7 @@ function addListeners(){
     	$(this).siblings().removeClass('active');
     	$(this).addClass('active');
     });
+	$('#originCountry, #destCountry').change(countryChange);
 	$('#stopOffModalAdd').click(addStopOff);
 	
 	$('body').on('click', '#excelIcon', downloadExcelFile);
@@ -178,6 +179,17 @@ function addListeners(){
 	$('body').on('show.bs.modal', '#rateRequestXmlModal,#rateResponseXmlModal', function(){
 		prettyPrint();
 	});
+}
+
+function countryChange(){
+	if ('CAN' == $('#originCountry').val() && 'CAN' == $('#destCountry').val()){
+		$('#currency').prop('disabled', true);
+		$('#currency').selectpicker('val', 'CAD');
+		$('#currency').selectpicker('refresh');
+	}else{
+		$('#currency').prop('disabled', false);
+		$('#currency').selectpicker('refresh');
+	}
 }
 
 function addStopOff(){
@@ -371,7 +383,7 @@ function clearOriginFields(){
 	$('#originZip').val('');
 	$('#originCounty').val('');
 	$('#originSPLC').val('');
-	$('#originCountry').val('');
+	$('#originCountry').val('').change();
 }
 
 function clearDestFields(){
@@ -382,7 +394,7 @@ function clearDestFields(){
 	$('#destZip').val('');
 	$('#destCounty').val('');
 	$('#destSPLC').val('');
-	$('#destCountry').val('');
+	$('#destCountry').val('').change();
 }
 
 function originChanged(){
@@ -404,7 +416,7 @@ function loadDestFieldsFromObject(data){
 	$('#destZip').val(data.zip);
 	$('#destCounty').val(data.county);
 	$('#destSPLC').val(data.splc);
-	$('#destCountry').val(data.country);
+	$('#destCountry').val(data.country).change();
 }
 
 function loadOriginFieldsFromObject(data){
@@ -414,7 +426,7 @@ function loadOriginFieldsFromObject(data){
 	$('#originZip').val(data.zip);
 	$('#originCounty').val(data.county);
 	$('#originSPLC').val(data.splc);
-	$('#originCountry').val(data.country);
+	$('#originCountry').val(data.country).change();
 }
 
 function loadStopOffFieldsFromObject(data){
@@ -424,7 +436,7 @@ function loadStopOffFieldsFromObject(data){
 	$('#stopOffZip').val(data.zip);
 	$('#stopOffCounty').val(data.county);
 	$('#stopOffSPLC').val(data.splc);
-	$('#stopOffCountry').val(data.country);
+	$('#stopOffCountry').val(data.country).change();
 }
 
 function keyPressEvent(callback, nextElement){
@@ -654,50 +666,6 @@ function rateSuccess(rateResponse, statusText, xhr, form){
 		quoteClicked($(this));
 	});
 	lastRateFormObj = $('#ratingForm').formSerialize();
-	setUpCurrency();
-}
-
-function setUpCurrency(){
-	$('#currencyGroup button').click(function(){
-		if ($(this).hasClass('disabled') || $(this).hasClass('active')){
-			return;
-		}
-		$('#currencyGroup button').removeClass('active').addClass('disabled');
-		$(this).addClass('active');
-		$('#currencyGroup i').css('visibility', 'visible');
-		quoteShipDate = moment($('#quoteShipDate').text());
-		changeCurrency($('#quoteTable tbody tr td:nth(7)').text(), $(this).text(), quoteShipDate.month()+1, quoteShipDate.year());
-	});
-}
-
-function changeCurrency(fromCurrency, toCurrency, month, year){
-	$.get(readCurrencyUrl, {fromCurrency: fromCurrency, toCurrency: toCurrency, month: month, year: year}, function(data){
-
-		$('#quoteTable tbody tr').each(function(){
-			var originalValue = $(this).find('td:nth(4)').text();
-			var newValue = numeral(originalValue).multiply(numeral(data)).format('$0,0.00');
-			$(this).find('td:nth(4)').text(newValue);
-			$(this).find('td:nth(7)').text(toCurrency.toUpperCase());
-		});
-		
-		$('#quoteModalTable tbody tr').each(function(){
-			var originalValue = $(this).find('td:nth(6)').text();
-			var newValue = numeral(originalValue).multiply(numeral(data)).format('$0,0.00');
-			$(this).find('td:nth(6)').text(newValue);
-		});
-		
-		title = '<p>This currency conversion is only for informational purposes.  Some rounding error may occur within a few cents.  The conversion rate is updated once a month in MOM.</p>'
-			+'<p>The conversion from ' + fromCurrency + ' to ' + toCurrency + ' is ' + data + ' for the given ship date.';
-		$('#currencyGroup i:last').attr('data-original-title', title).tooltip({html:true, container: 'body'});
-	})
-		.fail(function(jqXHR, textStatus, errorThrown){
-			 var err = eval("(" + jqXHR.responseText + ")");
-			alert(err.message);
-		})
-		.always(function(){
-			$('#currencyGroup button').removeClass('disabled');
-			$('#currencyGroup i:first').css('visibility', 'hidden');
-		});
 }
 
 function downloadExcelFile(){

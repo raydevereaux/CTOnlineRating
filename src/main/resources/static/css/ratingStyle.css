@@ -28,3 +28,7 @@ tr.striped {
 
 :focus {outline:none !important;}
 ::-moz-focus-inner {border:0 !important;}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus{
+	background-color:#ECECEC;
+}

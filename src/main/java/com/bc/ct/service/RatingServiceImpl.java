@@ -1,9 +1,11 @@
 package com.bc.ct.service;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class RatingServiceImpl implements RatingService {
 	private RateClient rateClient;
 	@Autowired
 	private Jaxb2Marshaller marshaller;
+	@Autowired
+	private CurrencyService currencyService;
 	
 	private Logger logger = LoggerFactory.getLogger(RatingServiceImpl.class);
 	
@@ -93,13 +97,40 @@ public class RatingServiceImpl implements RatingService {
 		}
 	}
 	
+	/**
+	 * Rate is default in USD.  If they want it in another currency do the conversion here.
+	 * @param request RateRequest
+	 * @param response RateResponse
+	 */
 	private void modifyCurrency(RateRequest request, RateResponse response) {
 		boolean intraCanadian = "CAN".equalsIgnoreCase(request.getOrigin().getNation()) &&
 				"CAN".equalsIgnoreCase(request.getDest().getNation());
-		if (intraCanadian) {
+		if (intraCanadian) { //Rate from CT is already in CAD.  Just change the currency code
 			for (RateQuote quote : response.getQuotes()){
 				quote.setCurrency("CAD");
 			}	
+		}else if (!"USD".equalsIgnoreCase(request.getCurrency())) {
+			DateTime shipDate = new DateTime(request.getShipDate());
+			try {
+				BigDecimal rate = currencyService.readCurrencyExchangeRate(shipDate.getYear(), shipDate.getMonthOfYear(), "USD", request.getCurrency());
+				
+				//Modify amounts based on currency exchange rate.
+				for (RateQuote quote : response.getQuotes()){
+					quote.setCurrency(request.getCurrency());
+					quote.setTotalAmt(quote.getTotalAmt()*rate.floatValue());
+					for (Leg leg : quote.getLeg()) {
+						leg.setAmt(leg.getAmt()*rate.floatValue());
+						for (com.bc.ct.ws.model.RateQuote.Leg.Charge charge : leg.getCharge()) {
+							charge.setAmt(charge.getAmt()*rate.floatValue());
+						}
+					}
+					for (Charge charge : quote.getCharges().getCharge()) {
+						charge.setAmt(charge.getAmt()*rate.floatValue());
+					}
+				}
+			}catch(IllegalArgumentException e) { //Unable to find rate, return from this method without modifying currency.
+				return;
+			}
 		}
 	}
 }

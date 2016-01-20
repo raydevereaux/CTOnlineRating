@@ -3,6 +3,8 @@ package com.bc.ct.service;
 import java.math.BigDecimal;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import com.bc.ct.repository.CurrencyRepository;
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
 
+	private static final Logger logger = LoggerFactory.getLogger(CurrencyServiceImpl.class);
+	
 	@Autowired
 	private CurrencyRepository currencyRepo;
 	
@@ -33,8 +37,10 @@ public class CurrencyServiceImpl implements CurrencyService {
 				return rate;
 			}
 			if (++tries == maxTries) {
-				throw new IllegalArgumentException(MessageFormatter.arrayFormat("No currency exchange rate found for {} to {} for Year {} and Month {}.", 
-						new Object[] {fromCurrency, toCurrency, year, month}).getMessage());
+				String msg = MessageFormatter.arrayFormat("No currency exchange rate found for {} to {} for Year {} and Month {}.", 
+						new Object[] {fromCurrency, toCurrency, year, month}).getMessage();
+				logger.error(msg);
+				throw new IllegalArgumentException(msg);
 			}
 		}
 	}

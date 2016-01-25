@@ -182,14 +182,14 @@ function addListeners(){
 }
 
 function countryChange(){
-	if ('CAN' == $('#originCountry').val() && 'CAN' == $('#destCountry').val()){
-		$('#currency').prop('disabled', true);
-		$('#currency').selectpicker('val', 'CAD');
-		$('#currency').selectpicker('refresh');
-	}else{
-		$('#currency').prop('disabled', false);
-		$('#currency').selectpicker('refresh');
-	}
+//	if ('CAN' == $('#originCountry').val() && 'CAN' == $('#destCountry').val()){
+//		$('#currency').prop('disabled', true);
+//		$('#currency').selectpicker('val', 'CAD');
+//		$('#currency').selectpicker('refresh');
+//	}else{
+//		$('#currency').prop('disabled', false);
+//		$('#currency').selectpicker('refresh');
+//	}
 }
 
 function addStopOff(){

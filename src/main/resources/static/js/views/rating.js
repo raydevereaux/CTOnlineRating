@@ -88,7 +88,7 @@ function setDefaults(){
 }
 
 function readClientGroupCookie(){
-	var cookieValue = $.cookie("clientGroup");
+	var cookieValue = Cookies.get('clientGroup');
 	//Read cookie value, set client group, and remake cookie
 	if (cookieValue){
 		$('#clientGroup').selectpicker('val', cookieValue);
@@ -97,7 +97,7 @@ function readClientGroupCookie(){
 }
 
 function setClientGroupCookie(clientGroup){
-	$.cookie("clientGroup", clientGroup, {expires : 30});
+	Cookies.set('clientGroup', clientGroup, {expires : 30});
 }
 
 function refreshOriginDest(){

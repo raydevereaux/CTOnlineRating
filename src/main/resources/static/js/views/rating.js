@@ -580,8 +580,8 @@ function populateCommodityTypeAhead(){
 				//LVL, Lumber, Particleboard, Plywood
 				sync(commodityBloodHound.get('2439120', '2421184', '2499610','2432158'));	
 			}else if ('BOISEB' === $('#clientGroup').val()){
-				//LVL, Lumber, Plywood, Thermoply, PB
-				sync(commodityBloodHound.get('2439120', '2421184', '2499110', '2499610', '2432158','2661935'));
+				//Cedar Lumber, LVL, Lumber, Plywood, Thermoply, PB
+				sync(commodityBloodHound.get('2421175', '2439120', '2421184', '2499110', '2499610', '2432158','2661935'));
 			}
 		}else{
 			commodityBloodHound.search(q, sync);

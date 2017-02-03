@@ -1,6 +1,7 @@
 com\bc\ct\repository\GeographyRepositoryImplTest.class
 com\bc\ct\ws\WebServiceTest.class
 com\bc\ct\service\GeographyServiceImplTest$1.class
+com\bc\ct\repository\CurrencyRepositoryImplTest.class
 com\bc\ct\repository\CommodityRepositoryImplTest.class
 com\bc\ct\CtOnlineRatingApplicationTests.class
 com\bc\ct\service\GeographyServiceImplTest.class

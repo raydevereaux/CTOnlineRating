@@ -689,10 +689,6 @@ function quoteClicked(tableRowElement){
 function validateForm(){
 	$('div .form-group').removeClass('has-error');
 	validates = true;
-	if (!$('#carrierList').selectpicker('val')){
-		$('#carrierList').focus().closest('.form-group').addClass('has-error');
-		validates = false;
-	}
 	if (!$('#shipDate').val()){
 		$('#shipDate').focus().closest('.form-group').addClass('has-error');
 		validates = false;

@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bc.ct.excel.RateQuoteExcel;
 import com.bc.ct.service.RatingService;
@@ -30,7 +30,7 @@ public class RatingController {
 	
 	private Logger logger = LoggerFactory.getLogger(RatingController.class);
 	
-	@RequestMapping("/")
+	@GetMapping("/")
 	private String index(Model model) {
 		RateRequest rateRequest = new RateRequest();
 		Commoditys comms = new Commoditys();
@@ -45,13 +45,18 @@ public class RatingController {
 		return "rating";
 	}
 	
-	@RequestMapping(value = "/rate", method = RequestMethod.POST)
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+	
+	@PostMapping("/rate")
 	private String rate(@ModelAttribute RateRequest rateRequest, Model model) {
 		model.addAttribute("rateResponse", rateService.rate(rateRequest));
 		return "ratingQuotes :: ratingQuoteTable";
 	}
 
-	@RequestMapping(value = "/rateExcel", method = RequestMethod.GET)
+	@GetMapping("/rateExcel")
 	private void rateExcel(@ModelAttribute RateRequest rateRequest, HttpServletResponse response) {
 		RateResponse rateResponse = rateService.rate(rateRequest);
 		RateQuoteExcel excel = new RateQuoteExcel(rateRequest, rateResponse);

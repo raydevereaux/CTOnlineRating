@@ -29,15 +29,19 @@
 	<script th:src="@{/js/prettify.js}"></script>
 	<script th:src="@{/js/js.cookie.js}"></script>
 	
+	<meta name="_csrf" th:if="${_csrf}" th:content="${_csrf.token}" />
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" th:if="${_csrf}" th:content="${_csrf.headerName}" />
+	
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		/* $(function() {
+		 $(function() {
 			var token = $("meta[name='_csrf']").attr("content");
 			var header = $("meta[name='_csrf_header']").attr("content");
 			$(document).ajaxSend(function(e, xhr, options) {
 				xhr.setRequestHeader(header, token);
 			});
-		}) */
+		}) 
 		/*]]>*/
 	</script>
 </head>

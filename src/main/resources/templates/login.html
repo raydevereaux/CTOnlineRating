@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: headerFragment('Login')" />
+
+<body onload='document.loginForm.username.focus();'>
+	<div class="container">
+		<div th:replace="ratingFragments :: header"></div>
+		<div class="well col-xs-offset-3 col-xs-6">
+			<form name="loginForm" th:action="@{/login}" method="post" role="form" class="form-horizontal">
+				<h2>Login<small> Use your Boise Cascade network login</small></h2>
+				<div class="form-group">
+					<div th:if="${param.error}" class="alert alert-danger">    
+	                    Invalid username and password.
+	                </div>
+	                <div th:if="${param.noAccess}" class="alert alert-danger"> 
+	                    You don't have the required permissions.
+	                </div>
+	                <div th:if="${param.denied}" class="alert alert-danger" id="denied">    
+	                    You do not have permission or your session has expired.  Please log in to continue.
+	                </div>
+	                <div th:if="${param.logout}" class="alert alert-success" id="logOutAlert"> 
+	                    You have been logged out.
+	                </div>
+				</div>
+				<div class="form-group row">
+					<label for="username" class="col-xs-2 control-label">Username</label>
+					<div class="col-xs-10">
+						<input type="text" id="username" name="username" class="form-control" placeholder="Username"/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="password" class="col-xs-2 control-label">Password</label>
+					<div class="col-xs-10">
+						<input type="password" id="password" name="password" class="form-control" placeholder="Password"/>
+					</div>
+				</div>
+				<div class="form-group row">
+	            	<div class="col-xs-offset-2 col-xs-10">
+	            		<label><input type="checkbox" id="remember-me" name="remember-me" checked="checked"/> Remember Me</label>
+	            	</div>
+	            </div>
+				<div class="form-group row">
+	            	<div class="col-xs-offset-2 col-xs-10">
+	            		<button type="submit" class="btn btn-primary">Log in</button>
+	            	</div>
+	            </div>
+	        </form>
+		</div>
+    </div>
+</body>
+</html>

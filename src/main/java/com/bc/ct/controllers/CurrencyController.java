@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,7 +17,7 @@ public class CurrencyController {
 	@Autowired
 	private CurrencyService currencyService;
 	
-	@RequestMapping(value = "/readCurrency", method = RequestMethod.GET)
+	@GetMapping("/readCurrency")
 	@ResponseBody
 	private BigDecimal readCurrency(@RequestParam String fromCurrency, @RequestParam String toCurrency,
 			@RequestParam(required=false) Integer year, @RequestParam(required=false) Integer month) {

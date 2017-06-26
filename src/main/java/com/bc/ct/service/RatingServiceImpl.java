@@ -2,9 +2,12 @@ package com.bc.ct.service;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,10 +61,24 @@ public class RatingServiceImpl implements RatingService {
 		response.setRateRequestXml(marshalObjectToXml(rateRequest));
 		response.setRateResponseXml(marshalObjectToXml(response));
 		
+		filterRoute(rateRequest.getRoute(), response.getQuotes());
+		
 		sortQuotes(response);
 		modifyCurrency(rateRequest, response);
 		
 		return response;
+	}
+	
+	private void filterRoute(String route, Collection<RateQuote> quotes) {
+		if (!StringUtils.isEmpty(route)) {
+			Iterator<RateQuote> iter = quotes.iterator();
+			while (iter.hasNext()) {
+				RateQuote quote = iter.next();
+				if (!StringUtils.containsIgnoreCase(quote.getRoute(), route)){
+					iter.remove();
+				}
+			}	
+		}
 	}
 	
 	private String marshalObjectToXml(Object objectToMarshal) {

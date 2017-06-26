@@ -14,6 +14,7 @@ C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\CacheService.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\repository\CarrierRepositoryImpl.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\WebFilterConfig.java
+C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\UserDetailsAuthoritiesPopulator.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\GeographyService.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\CarrierService.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\CarrierServiceImpl.java

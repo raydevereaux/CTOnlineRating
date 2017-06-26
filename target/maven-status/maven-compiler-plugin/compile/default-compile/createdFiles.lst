@@ -18,6 +18,7 @@ com\bc\ct\ws\RateClient.class
 com\bc\ct\service\GeographyServiceImpl$2.class
 com\bc\ct\ws\model\RateRequest$Commoditys$Commodity.class
 com\bc\ct\service\CacheServiceImpl.class
+com\bc\ct\config\UserDetailsAuthoritiesPopulator.class
 com\bc\ct\service\GeographyService.class
 com\bc\ct\ws\model\RateRequest$Stops$Stop.class
 com\bc\ct\ws\model\Adapter1.class

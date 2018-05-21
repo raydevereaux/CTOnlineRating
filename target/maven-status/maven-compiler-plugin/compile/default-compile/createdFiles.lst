@@ -1,6 +1,5 @@
 com\bc\ct\service\CurrencyService.class
 com\bc\ct\service\RatingService.class
-com\bc\ct\config\DatabaseConfig.class
 com\bc\ct\config\WebSecurityConfig.class
 com\bc\ct\repository\CarrierRepository.class
 com\bc\ct\repository\GeographyRepositoryImpl.class
@@ -67,6 +66,7 @@ com\bc\ct\repository\CommodityRepositoryImpl$1.class
 com\bc\ct\service\GeographyServiceImpl.class
 com\bc\ct\repository\CarrierRepositoryImpl.class
 com\bc\ct\service\GeographyServiceImpl$1.class
+com\bc\ct\config\DatabaseConfigLocal.class
 com\bc\ct\ws\model\ObjectFactory.class
 com\bc\ct\config\WebFilterConfig$1.class
 com\bc\ct\service\RatingServiceImpl$1.class

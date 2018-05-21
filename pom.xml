@@ -174,7 +174,7 @@
 		<repository>
 			<id>in-project</id>
 			<name>In Project Repo</name>
-			<url>file://${project.basedir}/src/main/resources/db</url>
+			<url>file:${project.basedir}/src/main/resources/db</url>
 		</repository>
 		<repository>
 			<id>artifactory_releases</id>

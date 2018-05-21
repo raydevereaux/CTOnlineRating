@@ -1,5 +1,4 @@
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\CacheServiceImpl.java
-C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\DatabaseConfig.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\ws\model\package-info.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\beans\Commodity.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\WebServiceConfig.java
@@ -12,6 +11,7 @@ C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\util\DateConverter.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\CommodityServiceImpl.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\service\CacheService.java
+C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\DatabaseConfigLocal.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\repository\CarrierRepositoryImpl.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\WebFilterConfig.java
 C:\Spring\SpringWorkspaces\CT Online Rating\CTOnlineRating\src\main\java\com\bc\ct\config\UserDetailsAuthoritiesPopulator.java

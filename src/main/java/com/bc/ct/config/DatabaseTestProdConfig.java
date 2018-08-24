@@ -17,9 +17,9 @@ import java.sql.SQLException;
 @Profile("!local")
 public class DatabaseTestProdConfig {
 
-	@Value("spring.uni.db.jndi-name")
+	@Value("${spring.uni.db.jndi-name}")
 	private String uniJndiName;
-	@Value("spring.ds_mom.jndi-name")
+	@Value("${spring.ds_mom.jndi-name}")
 	private String momJndiName;
 
 	@Bean

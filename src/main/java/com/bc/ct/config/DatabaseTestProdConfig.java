@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Configuration
-@Profile("!local")
+@Profile("usingJndi")
 public class DatabaseTestProdConfig {
 
 	@Value("${spring.uni.db.jndi-name}")

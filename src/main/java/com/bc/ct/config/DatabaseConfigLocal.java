@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-@Profile("local")
+//@Profile("local")
 public class DatabaseConfigLocal {
 
 	@Bean

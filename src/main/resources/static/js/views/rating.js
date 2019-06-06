@@ -23,13 +23,13 @@ function setUpExampleRates(){
 	setUpRates = function(){
 		$('#clientGroup').selectpicker('val', 'BOISEW');
 		clientChanged();
-		$('#originCode').val('53');
-		$('#originCity').val('MEDFORD');
+		$('#originCode').val('07');
+		$('#originCity').val('WHITE CITY');
 		$('#originState').val('OR');
 		$('#destCity').val('DENVER');
 		$('#destState').val('CO');
-		$('#commodityDesc').val('PLYWOOD');
-		$('#commodityCode').val('2432158');
+		$('#commodityDesc').val('LAMINATED VENEER LUMBER');
+		$('#commodityCode').val('2439120');
 		$('#commodityWeight').val('48000');
 		setTimeout(function(){
 			$('#carrierList').selectpicker('val', 'TRUCK');
@@ -38,9 +38,13 @@ function setUpExampleRates(){
 	$('#exampleRate1').click(setUpRates);
 	$('#exampleRate2').click(function(){
 		setUpRates();
+		$('#originCode').val('53');
+		$('#originCity').val('MEDFORD');
 		$('#destCity').val('DENVER');
 		$('#destState').val('CO');
 		$('#destCounty').val('');
+		$('#commodityDesc').val('PLYWOOD');
+		$('#commodityCode').val('2432158');
 		setTimeout(function(){
 			$('#carrierList').selectpicker('val', 'ALL');
 		}, 500);

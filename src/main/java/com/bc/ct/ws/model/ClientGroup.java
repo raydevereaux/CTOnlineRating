@@ -9,38 +9,12 @@
 package com.bc.ct.ws.model;
 
 import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for clientGroup.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * <p>
- * <pre>
- * &lt;simpleType name="clientGroup">
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="BOISEP"/>
- *     &lt;enumeration value="BOISEW"/>
- *     &lt;enumeration value="BOISEB"/>
- *     &lt;enumeration value="BOISEC"/>
- *     &lt;enumeration value="BOISEH"/>
- *     &lt;enumeration value="BOISET"/>
- *   &lt;/restriction>
- * &lt;/simpleType>
- * </pre>
- * 
- */
-@XmlType(name = "clientGroup")
 @XmlEnum
 public enum ClientGroup {
 
-    BOISEP,
     BOISEW,
-    BOISEB,
-    BOISEC,
-    BOISEH,
-    BOISET;
+    BOISEB;
 
     public String value() {
         return name();

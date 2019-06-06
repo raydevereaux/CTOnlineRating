@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema elementFormDefault="qualified" 
+<xsd:schema elementFormDefault="qualified"
             attributeFormDefault="unqualified"
             targetNamespace="http://www.boiseinc.com/cc"
             xmlns:tns="http://www.boiseinc.com/cc"
-	        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
-	        jaxb:version="2.0" 
-	        xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	        xmlns="http://www.w3.org/2001/XMLSchema"
-	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+            jaxb:version="2.0"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2001/XMLSchema"
+>
 
 	<xsd:annotation>
         <xsd:documentation>
@@ -176,12 +176,8 @@
      
 	<xsd:simpleType name="clientGroup">
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="BOISEP" />
 			<xsd:enumeration value="BOISEW" />
 			<xsd:enumeration value="BOISEB" />
-			<xsd:enumeration value="BOISEC" />
-			<xsd:enumeration value="BOISEH" />
-			<xsd:enumeration value="BOISET" />
 		</xsd:restriction>
 	</xsd:simpleType>
 	

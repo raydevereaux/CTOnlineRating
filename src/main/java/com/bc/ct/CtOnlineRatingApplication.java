@@ -11,7 +11,8 @@ public class CtOnlineRatingApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(CtOnlineRatingApplication.class, args);
     }
-    
+
+    //win 10 comment 11.05
     @Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(CtOnlineRatingApplication.class);

@@ -150,24 +150,6 @@
 	
 	<build>
 		<finalName>CTOnlineRating</finalName>
-		<plugins>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<target>
-								<copy file="target/CTOnlineRating.war" tofile="/bcapps/rapp/Builds/CTOnlineRating/Test/latest/CTOnlineRating.war"/>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
 	
 	<repositories>
